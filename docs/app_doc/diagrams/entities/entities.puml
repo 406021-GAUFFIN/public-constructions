@@ -1,0 +1,105 @@
+@startuml
+
+entity "Construction" as construction {
+  + construction_id : INT <<PK>>
+  + project_name : VARCHAR(255)
+  + project_address : VARCHAR(255)
+  + owner_id : INT <<FK>>
+  + planned_start_date : DATE
+  + actual_start_date : DATE
+  + planned_end_date : DATE
+  + actual_end_date : DATE
+  + project_status : ENUM("Planned","Approved", "In Progress", "Completed", "Stopped")
+  + workday_start_time : TIME
+  + workday_end_time : TIME
+  + List<DayOfWeek> workingDays
+  + budget : DECIMAL(15,2)
+  + description : TEXT
+  + project_type : VARCHAR(100)
+  + permit_number : VARCHAR(100)
+  + approved_by_municipality : BOOLEAN
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+  + approved_by_professionals : BOOLEAN
+  + approved_by_neighborhood : BOOLEAN
+}
+
+entity "Documentation_construction" as documentation {
+  + documentation_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + architectural_plan : VARCHAR(255)
+  + insurance_info : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+
+entity "Worker" as worker {
+  + worker_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + name : VARCHAR(255)
+  + lastname : VARCHAR(255)
+  + document : VARCHAR(20)  // DNI or national ID
+  + CUIL : VARCHAR(20)      // Unique Labor Identification Code
+  + phone : VARCHAR(50)
+  + email : VARCHAR(255)
+  + address : VARCHAR(255)
+  + ART_document : VARCHAR(255)
+  + CAT_document : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+
+entity "Professional" as professional {
+  + professional_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + name : VARCHAR(255)
+  + lastname : VARCHAR(255)
+  + document : VARCHAR(20)  // DNI or national ID
+  + CUIL : VARCHAR(20)      // Unique Labor Identification Code
+  + phone : VARCHAR(50)
+  + email : VARCHAR(255)
+  + address : VARCHAR(255)
+  + professional_license : VARCHAR(255)
+  + degree_certificate : VARCHAR(255)
+  + ART_document : VARCHAR(255)
+  + CAT_document : VARCHAR(255)
+  + specialty : ENUM("Architect", "Engineer", "Surveyor", "QuantitySurveyor", "InteriorDesigner", "LandscapeArchitect", "Other")
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+entity "Incidence" as incidence {
+  + incidence_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + description : TEXT
+  + incidence_date : DATE
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+
+construction ||--o{ incidence : "has"
+documentation ||--|| construction : "References"
+worker ||--o{ construction : "works on"
+professional ||--o{ construction : "works on"
+
+@enduml
