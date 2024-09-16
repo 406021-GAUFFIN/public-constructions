@@ -1,8 +1,8 @@
-package ar.edu.utn.frc.tup.lc.iv.entities;
+package ar.edu.utn.frc.tup.lc.iv.entities.audit;
 
+import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
