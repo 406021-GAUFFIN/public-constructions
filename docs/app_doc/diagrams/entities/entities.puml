@@ -33,6 +33,15 @@ entity "Documentation_construction" as documentation {
   + is_approved : BOOLEAN
   + documentation_type_id : int <<FK>>
 }
+entity "Log" as log {
+  + log_id : INT <<PK>>
+  + text : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+
+}
 
 entity "documentation_type" as documentation_type {
   + documentation_type_id : INT <<PK>>
