@@ -1,11 +1,8 @@
-package ar.edu.utn.frc.tup.lc.iv.entities.construction;
+package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
-import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.audit.LogEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +22,10 @@ public class NoteEntity extends BaseEntity {
 
     @Column(name = "USER_ID")
     Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "CONSTRUCTION_ID")
+    ConstructionEntity construction;
 
 
 }
