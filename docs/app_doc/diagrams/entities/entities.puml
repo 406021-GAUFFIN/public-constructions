@@ -13,7 +13,6 @@ entity "Construction" as construction {
   + project_status : ENUM("Planned","Approved", "In Progress", "Completed", "Stopped")
   + workday_start_time : TIME
   + workday_end_time : TIME
-  + List<DayOfWeek> workingDays
   + description : TEXT
   + approved_by_municipality : BOOLEAN
   + created_by : VARCHAR(255)
@@ -51,7 +50,7 @@ entity "documentation_type" as documentation_type {
   + created_date : DATE
   + last_modified_by : LocalDateTime
   + last_modified_date : LocalDateTime
-  + is_approved : BOOLEAN
+
 
 }
 
@@ -86,15 +85,7 @@ entity "Worker" as worker {
 
 
 
-enum DayOfWeek {
-  MONDAY
-  TUESDAY
-  WEDNESDAY
-  THURSDAY
-  FRIDAY
-  SATURDAY
-  SUNDAY
-}
+
 
 entity "Note" as Note {
   + incidence_id : INT <<PK>>
@@ -107,11 +98,21 @@ entity "Note" as Note {
   + last_modified_by : LocalDateTime
   + last_modified_date : LocalDateTime
 }
+entity "Worker_speciality" as worker_speciality {
+  + speciality_id : INT <<PK>>
+  + name : VARCHAR
+  + description : VARCHAR
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
 worker ||--o{ documentation_worker : "has"
 construction ||--o{ Note : "has"
 construction ||--o{ documentation : "has"
 worker ||--o{ construction : "works on"
 documentation ||--|| documentation_type : "references"
+worker ||--|| worker_speciality : "references"
 
 
 @enduml
