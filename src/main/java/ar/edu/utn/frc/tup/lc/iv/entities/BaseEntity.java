@@ -1,6 +1,7 @@
 package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
+import ar.edu.utn.frc.tup.lc.iv.entities.audit.LogEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -47,16 +48,26 @@ public abstract class BaseEntity {
 
     @PrePersist
     protected void onCreate() {
-        createLog(this.userName,this.log);
+        if(shouldLog()){
+            createLog(this.userName,this.log);
+        }
+
     }
     @PreUpdate
     protected void onUpdate() {
-        createLog(this.userName,this.log);
+        if(shouldLog()){
+            createLog(this.userName,this.log);
+        }
     }
 
     private void createLog(String userName, String log) {
         //TODO: IMPLEMENT LOGGING SAVING ON THE TABLE LOG
+
         throw new NotImplementedException();
+    }
+
+    private boolean shouldLog(){
+        return  !(this instanceof LogEntity);
     }
 
 }
