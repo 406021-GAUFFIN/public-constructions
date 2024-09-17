@@ -6,63 +6,121 @@ import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.NoteEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.documentation.DocumentationConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EnumType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
-
 import java.util.Date;
 import java.util.List;
 
+
+/**
+ * Entity representing a construction project, with details
+ * about its timeline, approval, and related workers, documentation,
+ * and notes.
+ */
 @Entity
-@Table(name = ConstructionEntity.TABLE_NAME )
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = ConstructionEntity.TABLE_NAME)
 @Setter
 @Getter
+@NoArgsConstructor
 public class ConstructionEntity extends BaseEntity {
+
+    /**
+     * Name of the table on the database.
+     */
     static final String TABLE_NAME = "CONSTRUCTION";
 
-   @Column(name = "OWNER_ID")
-   Long ownerId;
+    /**
+     * ID of the owner of the construction project.
+     */
 
+    @Column(name = "OWNER_ID")
+    private Long ownerId;
+
+    /**
+     * ID of the lot where the construction takes place.
+     */
    @Column(name = "LOT_ID")
-   Integer lotId;
+   private Integer lotId;
 
+    /**
+     * Planned start date of the construction.
+     */
    @Column(name = "PLANNED_START_DATE")
-   Date plannedStartDate;
+   private Date plannedStartDate;
 
+    /**
+     * Actual start date of the construction.
+     */
    @Column(name = "ACTUAL_START_DATE")
-   Date actualStartDate;
+   private Date actualStartDate;
 
+    /**
+     * Planned end date of the construction.
+     */
    @Column(name = "PLANNED_END_DATE")
-   Date plannedEndDate;
+   private Date plannedEndDate;
 
+    /**
+     * Actual end date of the construction, if applicable.
+     */
    @Column(name = "ACTUAL_END_DATE")
-   Date actualEndDate;
+   private Date actualEndDate;
 
+    /**
+     * Description or details about the construction project.
+     */
    @Column(name = "DESCRIPTION")
-   String description;
+   private String description;
 
+    /**
+     * Whether the project has been approved by the municipality.
+     */
    @Column(name = "APPROVED_BY_MUNICIPALITY")
-   Boolean approvedByMunicipality;
+   private Boolean approvedByMunicipality;
 
+    /**
+     * Name of the construction project.
+     */
    @Column(name = "PROJECT_NAME")
-   String projectName;
+   private String projectName;
 
+    /**
+     * Address of the construction project.
+     */
    @Column(name = "PROJECT_ADDRESS")
-   String projectAddress;
+   private String projectAddress;
 
+    /**
+     * Current status of the construction project
+     * (e.g., planned, in progress, completed).
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "CONSTRUCTION_STATUS")
     private ConstructionStatus constructionStatus;
 
-    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL,orphanRemoval = true)
-    List<NoteEntity> notes;
+    /**
+     * List of notes related to the construction project.
+     */
+    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NoteEntity> notes;
 
-    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL,orphanRemoval = true)
-    List<DocumentationConstructionEntity> documentation;
+    /**
+     * List of documentation related to the construction project.
+     */
+    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DocumentationConstructionEntity> documentation;
 
-    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL,orphanRemoval = true)
-    List<WorkerEntity> workers;
+    /**
+     * List of workers assigned to the construction project.
+     */
+    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkerEntity> workers;
 }
