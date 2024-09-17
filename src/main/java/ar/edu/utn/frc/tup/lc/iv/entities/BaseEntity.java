@@ -105,7 +105,7 @@ public class BaseEntity {
     }
 
     /**
-     * Creates a log entry for the entity
+     * Creates a log entry for the entity.
      * @param userNameParam the username associated with
      *                 the log entry
      * @param logParam the log message
