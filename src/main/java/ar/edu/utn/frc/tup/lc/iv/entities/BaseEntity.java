@@ -1,21 +1,17 @@
 package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
-import ar.edu.utn.frc.tup.lc.iv.entities.audit.LogEntity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -81,48 +77,6 @@ public class BaseEntity {
     private String log;
 
 
-    /**
-     * Hook method that is called before the entity is persisted.
-     * Creates a log entry if logging is enabled.
-     */
-    @PrePersist
-    protected void onCreate() {
-        if (shouldLog()) {
-            createLog(this.userName, this.log);
-        }
 
-    }
-
-    /**
-     * Hook method that is called before the entity is updated.
-     * Creates a log entry if logging is enabled.
-     */
-    @PreUpdate
-    protected void onUpdate() {
-        if (shouldLog()) {
-            createLog(this.userName, this.log);
-        }
-    }
-
-    /**
-     * Creates a log entry for the entity.
-     * @param userNameParam the username associated with
-     *                 the log entry
-     * @param logParam the log message
-     */
-    private void createLog(String userNameParam, String logParam) {
-        System.out.println(userNameParam + ": " + logParam);
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Determines if logging should be performed.
-     * Logging is not performed for instances of {@link LogEntity}.
-     *
-     * @return true if logging should be performed; false otherwise
-     */
-    private boolean shouldLog() {
-        return  !(this instanceof LogEntity);
-    }
 
 }
