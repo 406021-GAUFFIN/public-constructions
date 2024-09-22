@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lc.iv.entities.auxiliar;
+package ar.edu.utn.frc.tup.lc.iv.entities.documentation;
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import jakarta.persistence.Column;

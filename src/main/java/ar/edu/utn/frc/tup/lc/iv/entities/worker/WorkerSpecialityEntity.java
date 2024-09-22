@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lc.iv.entities.auxiliar;
+package ar.edu.utn.frc.tup.lc.iv.entities.worker;
 
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
@@ -10,17 +10,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-
 /**
  * Entity representing different types of worker
  * specializations in a construction project.
  */
 @Entity
-@Table(name = WorkerSpecialityTypeEntity.TABLE_NAME)
+@Table(name = WorkerSpecialityEntity.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
-public class WorkerSpecialityTypeEntity extends BaseEntity {
+public class WorkerSpecialityEntity extends BaseEntity {
 
     /**
      * Name of the table on the database.
@@ -38,7 +37,4 @@ public class WorkerSpecialityTypeEntity extends BaseEntity {
      */
     @Column(name = "DESCRIPTION")
     private String description;
-
-
-
 }
