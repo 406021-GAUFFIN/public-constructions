@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class represents a note related to a construction.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class contains documentation for a construction.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

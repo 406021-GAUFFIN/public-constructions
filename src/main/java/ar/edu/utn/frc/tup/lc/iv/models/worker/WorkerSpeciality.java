@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class represents a specialty of a worker.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

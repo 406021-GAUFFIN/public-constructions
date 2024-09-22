@@ -8,6 +8,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * This class represents a worker in the system.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

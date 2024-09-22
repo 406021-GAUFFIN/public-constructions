@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class represents a construction in the system.
+ */
 @Setter
 @Getter
 @NoArgsConstructor
