@@ -11,17 +11,18 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.Date;
 
 /**
  * Entity representing documentation related to a worker.
  */
 @Entity
-@Table(name = DocumentationWorkerEntity.TABLE_NAME)
+@Table(name = WorkerDocumentationEntity.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
-public class DocumentationWorkerEntity extends BaseEntity {
+public class WorkerDocumentationEntity extends BaseEntity {
     /**
      * Name of the table on the database.
      */
