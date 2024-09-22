@@ -12,13 +12,30 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Implementation of the ConstructionService interface.
+ */
 @RequiredArgsConstructor
 @Service
 public class ConstructionServiceImpl implements ConstructionService {
+
+    /**
+     * Repository for accessing construction entities.
+     */
     private final ConstructionRepository constructionRepository;
 
+    /**
+     * Model mapper for converting between DTOs and entities.
+     */
     private final ModelMapper modelMapper;
 
+    /**
+     * Registers a new construction based on the provided request DTO.
+     *
+     * @param constructionRequest The data transfer object
+     *                            containing construction details.
+     * @return The response DTO of the registered construction.
+     */
     @Override
     public ConstructionResponseDto registerConstruction(ConstructionRequestDto constructionRequest) {
         Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
