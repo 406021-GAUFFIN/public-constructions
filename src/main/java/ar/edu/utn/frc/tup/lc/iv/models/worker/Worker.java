@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.models.worker;
 
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerSpecialityEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity;
+import ar.edu.utn.frc.tup.lc.iv.models.documentation.WorkerDocumentation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -71,12 +72,12 @@ public class Worker {
     /**
      * Type of speciality of the worker.
      */
-    private WorkerSpecialityEntity workerSpecialityType;
+    private WorkerSpeciality workerSpeciality;
 
     /**
      * List of documentation associated with the worker.
      */
-    private List<WorkerDocumentationEntity> documentationWorker;
+    private List<WorkerDocumentation> documentation;
 
     /**
      * Field that indicates if a worker can work on

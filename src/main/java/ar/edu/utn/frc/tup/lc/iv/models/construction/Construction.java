@@ -3,6 +3,9 @@ package ar.edu.utn.frc.tup.lc.iv.models.construction;
 import ar.edu.utn.frc.tup.lc.iv.entities.documentation.ConstructionDocumentationEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.note.NoteEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
+import ar.edu.utn.frc.tup.lc.iv.models.documentation.ConstructionDocumentation;
+import ar.edu.utn.frc.tup.lc.iv.models.note.Note;
+import ar.edu.utn.frc.tup.lc.iv.models.worker.Worker;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -99,15 +102,15 @@ public class Construction {
     /**
      * List of notes related to the construction project.
      */
-    private List<NoteEntity> notes;
+    private List<Note> notes;
 
     /**
      * List of documentation related to the construction project.
      */
-    private List<ConstructionDocumentationEntity> documentation;
+    private List<ConstructionDocumentation> documentation;
 
     /**
      * List of workers assigned to the construction project.
      */
-    private List<WorkerEntity> workers;
+    private List<Worker> workers;
 }

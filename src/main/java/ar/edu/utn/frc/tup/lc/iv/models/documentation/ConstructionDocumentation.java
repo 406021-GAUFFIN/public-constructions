@@ -49,5 +49,5 @@ public class ConstructionDocumentation {
     /**
      * Type of the documentation (e.g., architectural plan, insurance info).
      */
-    private DocumentationTypeEntity documentType;
+    private DocumentationType documentType;
 }
