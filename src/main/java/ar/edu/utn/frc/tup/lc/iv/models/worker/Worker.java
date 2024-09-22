@@ -1,7 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.models.worker;
 
-import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerSpecialityEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity;
 import ar.edu.utn.frc.tup.lc.iv.models.documentation.WorkerDocumentation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

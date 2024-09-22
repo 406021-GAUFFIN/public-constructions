@@ -1,6 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.models.documentation;
 
-import ar.edu.utn.frc.tup.lc.iv.entities.documentation.DocumentationTypeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

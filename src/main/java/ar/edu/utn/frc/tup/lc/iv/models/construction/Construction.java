@@ -1,8 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.models.construction;
 
-import ar.edu.utn.frc.tup.lc.iv.entities.documentation.ConstructionDocumentationEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.note.NoteEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
 import ar.edu.utn.frc.tup.lc.iv.models.documentation.ConstructionDocumentation;
 import ar.edu.utn.frc.tup.lc.iv.models.note.Note;
 import ar.edu.utn.frc.tup.lc.iv.models.worker.Worker;
