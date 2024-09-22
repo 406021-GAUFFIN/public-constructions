@@ -16,6 +16,8 @@ import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class WorkerEntity extends BaseEntity {
 
     /**
@@ -75,11 +78,13 @@ public class WorkerEntity extends BaseEntity {
      */
     @OneToOne
     @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id")
+    @NotAudited
     private WorkerSpecialityTypeEntity workerSpecialityType;
 
     /**
      * List of documentation associated with the worker.
      */
+    @NotAudited
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentationWorkerEntity> documentationWorker;
 

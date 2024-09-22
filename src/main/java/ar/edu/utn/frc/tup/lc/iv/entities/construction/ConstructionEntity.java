@@ -16,6 +16,9 @@ import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +33,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class ConstructionEntity extends BaseEntity {
 
     /**
@@ -109,12 +113,14 @@ public class ConstructionEntity extends BaseEntity {
     /**
      * List of notes related to the construction project.
      */
+    @NotAudited
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NoteEntity> notes;
 
     /**
      * List of documentation related to the construction project.
      */
+    @NotAudited
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentationConstructionEntity> documentation;
 
