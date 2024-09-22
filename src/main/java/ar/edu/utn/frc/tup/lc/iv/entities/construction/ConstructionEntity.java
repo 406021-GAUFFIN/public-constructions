@@ -46,10 +46,10 @@ public class ConstructionEntity extends BaseEntity {
     private Long ownerId;
 
     /**
-     * ID of the lot where the construction takes place.
+     * ID of the plot where the construction takes place.
      */
    @Column(name = "LOT_ID")
-   private Integer lotId;
+   private Long plotId;
 
     /**
      * Planned start date of the construction.
