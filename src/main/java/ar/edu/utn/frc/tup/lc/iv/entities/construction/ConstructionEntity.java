@@ -6,7 +6,13 @@ import ar.edu.utn.frc.tup.lc.iv.entities.documentation.ConstructionDocumentation
 import ar.edu.utn.frc.tup.lc.iv.entities.note.NoteEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

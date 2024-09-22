@@ -3,7 +3,11 @@ package ar.edu.utn.frc.tup.lc.iv.entities.documentation;
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
