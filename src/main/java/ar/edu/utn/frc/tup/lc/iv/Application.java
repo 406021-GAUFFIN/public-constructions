@@ -19,11 +19,6 @@ public class Application {
      * @param args application args
      */
     public static void main(String[] args) {
-//        Properties hibernateProperties = new Properties();
-//
-//        hibernateProperties.setProperty(
-//                "org.hibernate.envers.audit_table_suffix","_audit"
-//        );
 
 
         SpringApplication.run(Application.class, args);
