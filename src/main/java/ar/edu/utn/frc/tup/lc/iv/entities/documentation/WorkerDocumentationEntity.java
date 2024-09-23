@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+
 
 import java.util.Date;
 
@@ -22,6 +24,8 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
+
 public class WorkerDocumentationEntity extends BaseEntity {
     /**
      * Name of the table on the database.
