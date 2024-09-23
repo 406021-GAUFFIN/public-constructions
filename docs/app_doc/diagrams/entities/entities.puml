@@ -1,0 +1,110 @@
+@startuml
+
+entity "Construction" as construction {
+  + construction_id : INT <<PK>>
+  + project_name : VARCHAR(255)
+  + project_address : VARCHAR(255)
+  + lot_id: INT
+  + owner_id : INT <<FK>>
+  + planned_start_date : DATE
+  + actual_start_date : DATE
+  + planned_end_date : DATE
+  + actual_end_date : DATE
+  + project_status : ENUM("Planned","Approved", "In Progress", "Completed", "Stopped")
+  + workday_start_time : TIME
+  + workday_end_time : TIME
+  + description : TEXT
+  + approved_by_municipality : BOOLEAN
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+
+entity "Documentation_construction" as documentation {
+  + documentation_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + file_path : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+  + is_approved : BOOLEAN
+  + documentation_type_id : int <<FK>>
+}
+
+
+entity "documentation_type" as documentation_type {
+  + documentation_type_id : INT <<PK>>
+  + name : VARCHAR(255)
+  + description : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+
+
+}
+
+
+
+entity "Documentation_worker" as documentation_worker {
+  + documentation_id : INT <<PK>>
+  + ART_document : VARCHAR(255)
+  + CAT_document : VARCHAR(255)
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+  + expire_date : DATE
+}
+
+entity "Worker" as worker {
+  + worker_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + name : VARCHAR(255)
+  + lastname : VARCHAR(255)
+  + document : VARCHAR(20)  // DNI or national ID
+  + CUIL : VARCHAR(20)      // Unique Labor Identification Code
+  + contact_id : INT
+  + address_id : INT
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+  + specialty : ENUM("Architect", "Engineer", "Surveyor", "QuantitySurveyor", "InteriorDesigner", "LandscapeArchitect", "Other")
+}
+
+
+
+
+
+entity "Note" as Note {
+  + incidence_id : INT <<PK>>
+  + construction_id : INT <<FK>>
+  + user_id : INT
+  + description : TEXT
+  + incidence_date : DATE
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+entity "Worker_speciality" as worker_speciality {
+  + speciality_id : INT <<PK>>
+  + name : VARCHAR
+  + description : VARCHAR
+  + created_by : VARCHAR(255)
+  + created_date : DATE
+  + last_modified_by : LocalDateTime
+  + last_modified_date : LocalDateTime
+}
+worker ||--o{ documentation_worker : "has"
+construction ||--o{ Note : "has"
+construction ||--o{ documentation : "has"
+worker ||--o{ construction : "works on"
+documentation ||--|| documentation_type : "references"
+worker ||--|| worker_speciality : "references"
+
+
+@enduml
