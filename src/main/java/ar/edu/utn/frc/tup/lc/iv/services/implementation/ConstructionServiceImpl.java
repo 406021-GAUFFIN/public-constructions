@@ -6,8 +6,10 @@ import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,6 +32,19 @@ public class ConstructionServiceImpl implements ConstructionService {
     private final ModelMapper modelMapper;
 
     /**
+     * Initializes the model mapper configuration.
+     */
+    @PostConstruct
+    public void init() {
+        modelMapper.addMappings(new PropertyMap<ConstructionRequestDto, ConstructionEntity>() {
+            @Override
+            protected void configure() {
+                skip(destination.getId());
+            }
+        });
+    }
+
+    /**
      * Registers a new construction based on the provided request DTO.
      *
      * @param constructionRequest The data transfer object
@@ -44,7 +59,9 @@ public class ConstructionServiceImpl implements ConstructionService {
             throw new IllegalArgumentException("There is already a construction for the lot: " + constructionRequest.getPlotId());
         }
 
-        ConstructionEntity constructionToSave = modelMapper.map(constructionRequest, ConstructionEntity.class);
+        ConstructionEntity constructionToSave = new ConstructionEntity();
+
+        modelMapper.map(constructionRequest, constructionToSave);
         constructionToSave.setApprovedByMunicipality(false);
         constructionToSave.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
 

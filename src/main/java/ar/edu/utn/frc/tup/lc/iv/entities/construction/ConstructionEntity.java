@@ -48,7 +48,7 @@ public class ConstructionEntity extends BaseEntity {
     /**
      * ID of the plot where the construction takes place.
      */
-   @Column(name = "LOT_ID")
+   @Column(name = "PLOT_ID")
    private Long plotId;
 
     /**

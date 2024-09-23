@@ -4,7 +4,9 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +31,7 @@ public class ConstructionController {
      * @return The response DTO of the created construction.
      */
     @PostMapping
-    public ConstructionResponseDto createConstruction(ConstructionRequestDto constructionRequestDto) {
-        return constructionService.registerConstruction(constructionRequestDto);
+    public ResponseEntity<ConstructionResponseDto> createConstruction(@RequestBody ConstructionRequestDto constructionRequestDto) {
+        return ResponseEntity.ok(constructionService.registerConstruction(constructionRequestDto));
     }
 }
