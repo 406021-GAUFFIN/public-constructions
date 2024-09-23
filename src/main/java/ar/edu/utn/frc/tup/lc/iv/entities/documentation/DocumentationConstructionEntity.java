@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 /**
  * Entity representing documentation related to a construction project.
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class DocumentationConstructionEntity extends BaseEntity {
     /**
      * Name of the table on the database.

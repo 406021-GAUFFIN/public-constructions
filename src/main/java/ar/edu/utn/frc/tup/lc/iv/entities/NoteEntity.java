@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 /**
  * Entity representing a note associated
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class NoteEntity extends BaseEntity {
 
     /**

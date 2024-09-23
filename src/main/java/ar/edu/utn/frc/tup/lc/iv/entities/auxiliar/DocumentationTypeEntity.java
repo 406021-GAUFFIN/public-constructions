@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.envers.Audited;
 
 /**
  * Entity representing the type of documentation used in construction projects.
@@ -19,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class DocumentationTypeEntity extends BaseEntity {
 
     /**

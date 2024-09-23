@@ -78,13 +78,13 @@ public class WorkerEntity extends BaseEntity {
      */
     @OneToOne
     @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id")
-    @NotAudited
+
     private WorkerSpecialityTypeEntity workerSpecialityType;
 
     /**
      * List of documentation associated with the worker.
      */
-    @NotAudited
+
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentationWorkerEntity> documentationWorker;
 
