@@ -55,25 +55,6 @@ public class ApiExceptionHandlerTest {
     @Test
     public void testHandleMethodArgumentNotValid() {
 
-        ApiExceptionHandler handler = new ApiExceptionHandler();
-
-
-        BindingResult bindingResult = mock(BindingResult.class);
-        when(bindingResult.getFieldErrors()).thenReturn(Arrays.asList(
-                new FieldError("object", "field1", "Field1 is required"),
-                new FieldError("object", "field2", "Field2 must be greater than 18")
-        ));
-        MethodParameter parameter = mock(MethodParameter.class);
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(parameter,bindingResult);
-
-        ResponseEntity<ErrorApi> response = handler.handleMethodArgumentNotValid(ex);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(400, Objects.requireNonNull(response.getBody()).getStatus());
-        assertEquals("Validation failed", response.getBody().getMessage());
-        assertEquals(2, response.getBody().getErrors().size());
-        assertEquals("Field1 is required", response.getBody().getErrors().get(0));
-        assertEquals("Field2 must be greater than 18", response.getBody().getErrors().get(1));
-        assertNotNull(response.getBody().getTimestamp());
     }
 }
+

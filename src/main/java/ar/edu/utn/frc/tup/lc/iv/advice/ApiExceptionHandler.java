@@ -2,6 +2,8 @@ package ar.edu.utn.frc.tup.lc.iv.advice;
 
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,12 +41,12 @@ public class ApiExceptionHandler {
 
         ErrorApi error = ErrorApi.builder()
                 .timestamp(timeStamp)
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(ex.getMessage())
                 .build();
 
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -59,21 +61,65 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorApi> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        List<String> errors = ex.getBindingResult()
+
+        String error = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
+                .findFirst()
                 .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
+                .orElse("Validation error occurred");
 
+        ErrorApi errorApi = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Validation failed")
+                .error(error)
+                .build();
+
+        return new ResponseEntity<>(errorApi, HttpStatus.BAD_REQUEST);
+    }
+    /**
+     * Handles custom UpdateConstructionException and returns a structured error response.
+     *
+     * @param ex the exception that provides the error message for the response.
+     * @return a {@link ResponseEntity} with an {@link ErrorApi} object,
+     * status {@code 404 Not Found}, and includes a timestamp, status, error name, and message.
+     */
+    @ExceptionHandler(ConstructionNotFoundException.class)
+    public ResponseEntity<ErrorApi> handleConstructionNotFoundException(ConstructionNotFoundException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles UpdateConstructionStatusException and returns a structured error response.
+     *
+     * @param ex the exception to handle.
+     * @return a {@link ResponseEntity} with an {@link ErrorApi} object,
+     * status {@code 400 Bad Request},
+     * and includes a timestamp, status, error name, and message.
+     */
+    @ExceptionHandler(UpdateConstructionStatusException.class)
+    public ResponseEntity<ErrorApi> handleUpdateConstructionStatusException(UpdateConstructionStatusException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         ErrorApi error = ErrorApi.builder()
                 .timestamp(timestamp)
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .message("Validation failed")
-                .errors(errors)
+                .message(ex.getMessage())
                 .build();
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
 }
