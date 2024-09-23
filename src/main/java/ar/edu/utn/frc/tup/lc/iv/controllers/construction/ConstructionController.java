@@ -5,10 +5,7 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for managing construction operations.
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
+@CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
