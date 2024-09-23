@@ -7,6 +7,7 @@ import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -52,21 +53,27 @@ public class ConstructionServiceImpl implements ConstructionService {
      * @return The response DTO of the registered construction.
      */
     @Override
+    @Transactional
     public ConstructionResponseDto registerConstruction(ConstructionRequestDto constructionRequest) {
-        Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
+        try {
+            Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
 
-        if (constructionEntityFound.isPresent()) {
-            throw new IllegalArgumentException("There is already a construction for the lot: " + constructionRequest.getPlotId());
+            if (constructionEntityFound.isPresent()) {
+                throw new IllegalArgumentException("There is already a construction for the lot: " + constructionRequest.getPlotId());
+            }
+
+            ConstructionEntity constructionToSave = modelMapper.map(constructionRequest, ConstructionEntity.class);
+
+            constructionToSave.setApprovedByMunicipality(false);
+            constructionToSave.setConstructionStatus(ConstructionStatus.PLANNED);
+
+            ConstructionEntity savedConstruction = constructionRepository.save(constructionToSave);
+
+            return modelMapper.map(savedConstruction, ConstructionResponseDto.class);
+        } catch (IllegalArgumentException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException("Error registering construction: " + ex.getMessage(), ex);
         }
-
-        ConstructionEntity constructionToSave = new ConstructionEntity();
-
-        modelMapper.map(constructionRequest, constructionToSave);
-        constructionToSave.setApprovedByMunicipality(false);
-        constructionToSave.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
-
-        ConstructionEntity savedConstruction = constructionRepository.save(constructionToSave);
-
-        return modelMapper.map(savedConstruction, ConstructionResponseDto.class);
     }
 }
