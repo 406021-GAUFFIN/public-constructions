@@ -55,25 +55,19 @@ public class ConstructionServiceImpl implements ConstructionService {
     @Override
     @Transactional
     public ConstructionResponseDto registerConstruction(ConstructionRequestDto constructionRequest) {
-        try {
-            Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
+        Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
 
-            if (constructionEntityFound.isPresent()) {
-                throw new IllegalArgumentException("There is already a construction for the lot: " + constructionRequest.getPlotId());
-            }
-
-            ConstructionEntity constructionToSave = modelMapper.map(constructionRequest, ConstructionEntity.class);
-
-            constructionToSave.setApprovedByMunicipality(false);
-            constructionToSave.setConstructionStatus(ConstructionStatus.PLANNED);
-
-            ConstructionEntity savedConstruction = constructionRepository.save(constructionToSave);
-
-            return modelMapper.map(savedConstruction, ConstructionResponseDto.class);
-        } catch (IllegalArgumentException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new RuntimeException("Error registering construction: " + ex.getMessage(), ex);
+        if (constructionEntityFound.isPresent()) {
+            throw new IllegalArgumentException("There is already a construction for the lot: " + constructionRequest.getPlotId());
         }
+
+        ConstructionEntity constructionToSave = modelMapper.map(constructionRequest, ConstructionEntity.class);
+
+        constructionToSave.setApprovedByMunicipality(false);
+        constructionToSave.setConstructionStatus(ConstructionStatus.PLANNED);
+
+        ConstructionEntity savedConstruction = constructionRepository.save(constructionToSave);
+
+        return modelMapper.map(savedConstruction, ConstructionResponseDto.class);
     }
 }
