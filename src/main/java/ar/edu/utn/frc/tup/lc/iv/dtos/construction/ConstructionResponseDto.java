@@ -1,5 +1,6 @@
-package ar.edu.utn.frc.tup.lc.iv.models.construction;
+package ar.edu.utn.frc.tup.lc.iv.dtos.construction;
 
+import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.models.documentation.ConstructionDocumentation;
 import ar.edu.utn.frc.tup.lc.iv.models.note.Note;
 import ar.edu.utn.frc.tup.lc.iv.models.worker.Worker;
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,31 +17,11 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Construction {
+public class ConstructionResponseDto {
     /**
      * Unique identifier for the entity.
      */
     private Long id;
-
-    /**
-     * Date and time when the entity was created.
-     */
-    private LocalDateTime createdDate;
-
-    /**
-     * Username of the person who created the entity.
-     */
-    private String createdBy;
-
-    /**
-     * Date and time when the entity was last updated.
-     */
-    private LocalDateTime lastUpdatedAt;
-
-    /**
-     * Username of the person who last updated the entity.
-     */
-    private String lastUpdatedBy;
 
     /**
      * ID of the owner of the construction project.
@@ -51,7 +31,7 @@ public class Construction {
     /**
      * ID of the plot where the construction takes place.
      */
-    private Long potId;
+    private Long plotId;
 
     /**
      * Planned start date of the construction.
