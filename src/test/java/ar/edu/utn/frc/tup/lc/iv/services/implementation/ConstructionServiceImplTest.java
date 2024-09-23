@@ -6,7 +6,6 @@ import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,9 +23,6 @@ import java.util.Optional;
 class ConstructionServiceImplTest {
     @MockBean
     private ConstructionRepository constructionRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Autowired
     private ConstructionServiceImpl constructionService;
