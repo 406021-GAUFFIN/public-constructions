@@ -1,10 +1,8 @@
 package ar.edu.utn.frc.tup.lc.iv.entities.worker;
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
-
-import ar.edu.utn.frc.tup.lc.iv.entities.auxiliar.WorkerSpecialityTypeEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.documentation.DocumentationWorkerEntity;
+import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToOne;
@@ -78,15 +76,14 @@ public class WorkerEntity extends BaseEntity {
      */
     @OneToOne
     @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id")
-
-    private WorkerSpecialityTypeEntity workerSpecialityType;
+    private WorkerSpecialityEntity workerSpecialityType;
 
     /**
      * List of documentation associated with the worker.
      */
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DocumentationWorkerEntity> documentationWorker;
+    private List<WorkerDocumentationEntity> documentationWorker;
 
     /**
      * Construction project to which the worker is assigned.

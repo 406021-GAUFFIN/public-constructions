@@ -1,11 +1,11 @@
 package ar.edu.utn.frc.tup.lc.iv.entities.construction;
 
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.common.enums.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.NoteEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.documentation.DocumentationConstructionEntity;
+import ar.edu.utn.frc.tup.lc.iv.entities.documentation.ConstructionDocumentationEntity;
+import ar.edu.utn.frc.tup.lc.iv.entities.note.NoteEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
+import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -49,10 +49,10 @@ public class ConstructionEntity extends BaseEntity {
     private Long ownerId;
 
     /**
-     * ID of the lot where the construction takes place.
+     * ID of the plot where the construction takes place.
      */
-   @Column(name = "LOT_ID")
-   private Integer lotId;
+   @Column(name = "PLOT_ID")
+   private Long plotId;
 
     /**
      * Planned start date of the construction.
@@ -119,9 +119,8 @@ public class ConstructionEntity extends BaseEntity {
     /**
      * List of documentation related to the construction project.
      */
-
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DocumentationConstructionEntity> documentation;
+    private List<ConstructionDocumentationEntity> documentation;
 
     /**
      * List of workers assigned to the construction project.

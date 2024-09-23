@@ -1,6 +1,7 @@
-package ar.edu.utn.frc.tup.lc.iv.entities;
+package ar.edu.utn.frc.tup.lc.iv.entities.note;
 
 
+import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

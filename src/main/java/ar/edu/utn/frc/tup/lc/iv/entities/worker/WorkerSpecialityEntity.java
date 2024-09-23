@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lc.iv.entities.auxiliar;
+package ar.edu.utn.frc.tup.lc.iv.entities.worker;
 
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
@@ -16,12 +16,12 @@ import org.hibernate.envers.Audited;
  * specializations in a construction project.
  */
 @Entity
-@Table(name = WorkerSpecialityTypeEntity.TABLE_NAME)
+@Table(name = WorkerSpecialityEntity.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
 @Audited
-public class WorkerSpecialityTypeEntity extends BaseEntity {
+public class WorkerSpecialityEntity extends BaseEntity {
 
     /**
      * Name of the table on the database.

@@ -1,7 +1,6 @@
 package ar.edu.utn.frc.tup.lc.iv.entities.documentation;
 
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
-import ar.edu.utn.frc.tup.lc.iv.entities.auxiliar.DocumentationTypeEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -18,12 +17,13 @@ import org.hibernate.envers.Audited;
  * Entity representing documentation related to a construction project.
  */
 @Entity
-@Table(name = DocumentationConstructionEntity.TABLE_NAME)
+@Table(name = ConstructionDocumentationEntity.TABLE_NAME)
 @Setter
 @Getter
 @NoArgsConstructor
 @Audited
-public class DocumentationConstructionEntity extends BaseEntity {
+
+public class ConstructionDocumentationEntity extends BaseEntity {
     /**
      * Name of the table on the database.
      */

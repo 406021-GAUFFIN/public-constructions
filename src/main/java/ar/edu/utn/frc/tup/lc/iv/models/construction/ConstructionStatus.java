@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lc.iv.dtos.common.enums;
+package ar.edu.utn.frc.tup.lc.iv.models.construction;
 
 
 /**
