@@ -24,7 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "cadastre.url = http://localhost:8080",
+})
 public class ApiExceptionHandlerTest {
 
 
