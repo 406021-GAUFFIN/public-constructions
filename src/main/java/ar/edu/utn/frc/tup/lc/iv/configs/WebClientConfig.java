@@ -4,7 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
+/**
+ * Configuration class to set up WebClient beans.
+ * This configuration provides a WebClient instance and its Builder
+ * to be used throughout the application for making HTTP requests.
+ */
 @Configuration
 public class WebClientConfig {
 
