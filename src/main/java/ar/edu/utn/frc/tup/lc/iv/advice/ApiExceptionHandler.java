@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 /**
@@ -26,6 +25,11 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 public class ApiExceptionHandler {
+
+    /**
+     * date formater string.
+     */
+    private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
     /**
      * Handles unhandled exceptions and returns a structured error response.
      *
@@ -37,7 +41,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorApi> handleAllExceptions(Exception ex) {
-        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
 
         ErrorApi error = ErrorApi.builder()
                 .timestamp(timeStamp)
@@ -59,7 +63,7 @@ public class ApiExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorApi> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
 
 
         String error = ex.getBindingResult()
@@ -80,15 +84,16 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errorApi, HttpStatus.BAD_REQUEST);
     }
     /**
-     * Handles custom UpdateConstructionException and returns a structured error response.
+     * Handles custom UpdateConstructionException.
      *
-     * @param ex the exception that provides the error message for the response.
+     * @param ex the exception that provides the
+     *           error message for the response.
      * @return a {@link ResponseEntity} with an {@link ErrorApi} object,
-     * status {@code 404 Not Found}, and includes a timestamp, status, error name, and message.
+     * status {@code 404 Not Found}
      */
     @ExceptionHandler(ConstructionNotFoundException.class)
     public ResponseEntity<ErrorApi> handleConstructionNotFoundException(ConstructionNotFoundException ex) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
 
         ErrorApi error = ErrorApi.builder()
                 .timestamp(timestamp)
@@ -101,16 +106,16 @@ public class ApiExceptionHandler {
     }
 
     /**
-     * Handles UpdateConstructionStatusException and returns a structured error response.
+     * Handles UpdateConstructionStatusException
+     * and returns a structured error response.
      *
      * @param ex the exception to handle.
      * @return a {@link ResponseEntity} with an {@link ErrorApi} object,
-     * status {@code 400 Bad Request},
-     * and includes a timestamp, status, error name, and message.
+     * status {@code 400 Bad Request}
      */
     @ExceptionHandler(UpdateConstructionStatusException.class)
     public ResponseEntity<ErrorApi> handleUpdateConstructionStatusException(UpdateConstructionStatusException ex) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
 
         ErrorApi error = ErrorApi.builder()
                 .timestamp(timestamp)

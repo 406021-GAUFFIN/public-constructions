@@ -6,7 +6,6 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusReques
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
@@ -18,7 +17,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+
 import java.util.Optional;
 
 /**
@@ -80,18 +79,29 @@ public class ConstructionServiceImpl implements ConstructionService {
         return modelMapper.map(savedConstruction, ConstructionResponseDto.class);
     }
 
+
+    /**
+     * Updates the status of an existing construction using the provided DTO.
+     *
+     * @param updateStatusRequestDto DTO with construction ID and new status.
+     * @return Response DTO with the result of the update.
+     * @throws UpdateConstructionStatusException if the
+     * update fails due to invalid status or ID.
+     */
+
     @Override
     @Transactional
-    public ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto) {
+    public ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
         ConstructionUpdateStatusResponseDto response = new ConstructionUpdateStatusResponseDto();
 
 
         ConstructionEntity constructionEntity = constructionRepository
-                .findById(constructionUpdateStatusRequestDto.getConstructionId())
-                .orElseThrow(() -> new ConstructionNotFoundException("Construction with ID " + constructionUpdateStatusRequestDto.getConstructionId() + " not found."));
+                .findById(updateStatusRequestDto.getConstructionId())
+                .orElseThrow(() -> new ConstructionNotFoundException("Construction with ID "
+                        + updateStatusRequestDto.getConstructionId() + " not found."));
 
 
-        ConstructionStatus newStatus = constructionUpdateStatusRequestDto.getStatus();
+        ConstructionStatus newStatus = updateStatusRequestDto.getStatus();
 
 
         newStatus.validateTransition(constructionEntity);
@@ -103,7 +113,7 @@ public class ConstructionServiceImpl implements ConstructionService {
 
         constructionRepository.save(constructionEntity);
 
-        response.setMessage("Construction updated with ID " + constructionUpdateStatusRequestDto.getConstructionId());
+        response.setMessage("Construction updated with ID " + updateStatusRequestDto.getConstructionId());
         return response;
 
 

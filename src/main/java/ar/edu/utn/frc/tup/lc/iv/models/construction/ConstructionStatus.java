@@ -41,6 +41,14 @@ public enum ConstructionStatus {
      */
     STOPPED;
 
+    /**
+     * Validates the transition of a construction entity
+     * to the current construction status.
+     *
+     * @param constructionEntity the construction entity to validate
+     * @throws UpdateConstructionStatusException if the
+     * transition to the current status is invalid
+     */
     public void validateTransition(ConstructionEntity constructionEntity) {
         switch (this) {
             case APPROVED:
@@ -53,7 +61,8 @@ public enum ConstructionStatus {
 
             case COMPLETED:
                 if (constructionEntity.getConstructionStatus() != IN_PROGRESS) {
-                    throw new UpdateConstructionStatusException("The construction cannot be marked as COMPLETED because it is not in the IN_PROGRESS state.");
+                    throw new UpdateConstructionStatusException("The construction cannot be marked as"
+                            + " COMPLETED because it is not in the IN_PROGRESS state.");
                 }
                 break;
 
@@ -61,6 +70,12 @@ public enum ConstructionStatus {
                 break;
         }
     }
+    /**
+     * Handles the state transition for the construction
+     * entity to the current construction status.
+     *
+     * @param constructionEntity the construction entity to update
+     */
     public void handleStateTransition(ConstructionEntity constructionEntity) {
         switch (this) {
             case IN_PROGRESS:

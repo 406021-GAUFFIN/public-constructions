@@ -21,6 +21,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ConstructionResponseDto {
     /**
+     * Constant for date format to avoid duplicate literals.
+     */
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+
+    /**
      * Unique identifier for the entity.
      */
     @JsonProperty("construction-id")
@@ -41,28 +46,28 @@ public class ConstructionResponseDto {
     /**
      * Planned start date of the construction.
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @JsonProperty("planned-start-date")
     private Date plannedStartDate;
 
     /**
      * Actual start date of the construction.
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @JsonProperty("actual-start-date")
     private Date actualStartDate;
 
     /**
      * Planned end date of the construction.
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @JsonProperty("planned-end-date")
     private Date plannedEndDate;
 
     /**
      * Actual end date of the construction, if applicable.
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @JsonProperty("actual-end-date")
     private Date actualEndDate;
 
