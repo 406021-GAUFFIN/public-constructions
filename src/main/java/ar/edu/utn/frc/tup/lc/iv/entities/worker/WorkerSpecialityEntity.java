@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 
 /**
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Audited
 public class WorkerSpecialityEntity extends BaseEntity {
 
     /**
@@ -37,4 +39,7 @@ public class WorkerSpecialityEntity extends BaseEntity {
      */
     @Column(name = "DESCRIPTION")
     private String description;
+
+
+
 }

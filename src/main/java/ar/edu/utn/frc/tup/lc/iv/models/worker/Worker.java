@@ -78,6 +78,7 @@ public class Worker {
     /**
      * List of documentation associated with the worker.
      */
+
     private List<WorkerDocumentation> documentation;
 
     /**
