@@ -96,7 +96,8 @@ public class ConstructionServiceImpl implements ConstructionService {
      *
      * @param updateStatusRequestDto DTO with construction ID and new status.
      * @return Response DTO with the result of the update.
-     * @throws UpdateConstructionStatusException if the update fails due to invalid status or ID.
+     * @throws UpdateConstructionStatusException
+     * if the update fails due to invalid status or ID.
      */
     @Override
     @Transactional
