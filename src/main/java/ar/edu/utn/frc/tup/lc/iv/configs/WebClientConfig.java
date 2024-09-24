@@ -10,8 +10,8 @@ public class WebClientConfig {
 
     /**
      * WebClient bean to make HTTP requests.
-     *
-     * @return the WebClient instance
+     * @param builder 
+     * @return the WebClient instance.
      */
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
@@ -19,8 +19,8 @@ public class WebClientConfig {
     }
 
     /**
-     * WebClient.Builder bean
-     * @return the Webclient builder instance
+     * WebClient.Builder bean.
+     * @return the Webclient builder instance.
      */
     @Bean
     public WebClient.Builder webClientBuilder() {
