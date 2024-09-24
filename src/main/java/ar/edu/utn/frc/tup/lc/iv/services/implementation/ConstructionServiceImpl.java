@@ -75,7 +75,9 @@ public class ConstructionServiceImpl implements ConstructionService {
         Optional<ConstructionEntity> constructionEntityFound = constructionRepository.findByPlotId(constructionRequest.getPlotId());
 
         if (constructionEntityFound.isPresent()) {
-            throw new ConstructionAlreadyExistsException("There is already a construction for the plot: " + constructionRequest.getPlotId());
+            throw new ConstructionAlreadyExistsException(
+                    "There is already a construction for the plot: " + constructionRequest.getPlotId()
+            );
         }
 
         ConstructionEntity constructionToSave = modelMapper.map(constructionRequest, ConstructionEntity.class);
@@ -94,15 +96,17 @@ public class ConstructionServiceImpl implements ConstructionService {
      *
      * @param updateStatusRequestDto DTO with construction ID and new status.
      * @return Response DTO with the result of the update.
-     * @throws UpdateConstructionStatusException
-     *         if the update fails due to invalid status or ID.
+     * @throws UpdateConstructionStatusException if the update fails due to invalid status or ID.
      */
     @Override
     @Transactional
     public ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
         ConstructionUpdateStatusResponseDto response = new ConstructionUpdateStatusResponseDto();
 
-        ConstructionEntity constructionEntity = constructionRepository.findById(updateStatusRequestDto.getConstructionId()).orElseThrow(() -> new ConstructionNotFoundException("Construction with ID " + updateStatusRequestDto.getConstructionId() + " not found."));
+        ConstructionEntity constructionEntity = constructionRepository.findById(updateStatusRequestDto.getConstructionId())
+                .orElseThrow(() -> new ConstructionNotFoundException(
+                        "Construction with ID " + updateStatusRequestDto.getConstructionId() + " not found.")
+                );
 
         ConstructionStatus newStatus = updateStatusRequestDto.getStatus();
 

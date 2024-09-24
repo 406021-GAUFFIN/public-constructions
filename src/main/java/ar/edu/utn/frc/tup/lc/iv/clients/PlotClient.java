@@ -22,7 +22,7 @@ public class PlotClient {
     /**
      * Base URL for the Plot microservice.
      */
-    String BASE_URL = "http://cadastre-service/api";
+    private String baseUrl = "http://cadastre-service/api";
 
     /**
      * Verifies if a plot exists by its ID.
@@ -33,7 +33,7 @@ public class PlotClient {
     public boolean plotExists(Long plotId) {
         try {
             Mono<Boolean> response = webClient.get()
-                    .uri("{baseUrl}/plots/{plotId}/exists", BASE_URL, plotId)
+                    .uri("{baseUrl}/plots/{plotId}/exists", baseUrl, plotId)
                     .retrieve()
                     .bodyToMono(Boolean.class);
 

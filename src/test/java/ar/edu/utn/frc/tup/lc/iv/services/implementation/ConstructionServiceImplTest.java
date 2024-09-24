@@ -88,7 +88,7 @@ class ConstructionServiceImplTest {
         verify(constructionRepository).findByPlotId(constructionRequest.getPlotId());
         verify(constructionRepository).save(any(ConstructionEntity.class));
     }
-    
+
     /**
      * Tests the successful update of a construction's status.
      * It verifies that the construction status is updated correctly and that the correct message is returned.
