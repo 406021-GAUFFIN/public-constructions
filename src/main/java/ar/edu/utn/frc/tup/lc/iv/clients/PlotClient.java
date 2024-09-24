@@ -1,7 +1,9 @@
 package ar.edu.utn.frc.tup.lc.iv.clients;
 
 import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -22,7 +24,8 @@ public class PlotClient {
     /**
      * Base URL for the Plot microservice.
      */
-    private String baseUrl = "http://cadastre-service/api";
+    @Value("${cadastre.url}")
+    private String baseUrl;
 
     /**
      * Verifies if a plot exists by its ID.
