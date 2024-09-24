@@ -1,7 +1,6 @@
 package ar.edu.utn.frc.tup.lc.iv.clients;
 
 import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
