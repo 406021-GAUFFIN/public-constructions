@@ -32,12 +32,6 @@ public class ConstructionResponseDto {
     private Long id;
 
     /**
-     * ID of the owner of the construction project.
-     */
-    @JsonProperty("owner-id")
-    private Long ownerId;
-
-    /**
      * ID of the plot where the construction takes place.
      */
     @JsonProperty("plot-id")

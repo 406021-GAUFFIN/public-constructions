@@ -19,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * in construction entities based on the construction status.
  */
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "cadastre.url = http://localhost:8080",
+})
 public class ConstructionStatusTest {
 
     /**
