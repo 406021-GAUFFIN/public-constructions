@@ -12,7 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "cadastre.url = http://localhost:8080",
+})
 @AutoConfigureMockMvc
 public class PingControllerTest {
 

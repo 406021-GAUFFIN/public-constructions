@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql-database-constructions:
+    image: mysql:latest
+    container_name: mysql-database-constructions
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: constructions
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - /var/lib/mysql_data_constructions:/var/lib/mysql_constructions
+    networks:
+      - constructions-network
+
+
+networks:
+  constructions-network:
+    driver: bridge
