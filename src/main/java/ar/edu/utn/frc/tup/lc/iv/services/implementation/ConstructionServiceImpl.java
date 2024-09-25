@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the ConstructionService interface.
@@ -117,6 +120,16 @@ public class ConstructionServiceImpl implements ConstructionService {
         return response;
 
 
+    }
+
+    @Override
+    public List<ConstructionResponseDto> getAllConstructions() {
+        List<ConstructionEntity> constructions = constructionRepository.findAll();
+
+        // Mapeamos cada entidad a su DTO
+        return constructions.stream()
+                .map(construction -> modelMapper.map(construction, ConstructionResponseDto.class))
+                .collect(Collectors.toList());
     }
 
 

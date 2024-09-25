@@ -18,4 +18,6 @@ public interface ConstructionRepository extends JpaRepository<ConstructionEntity
      * the found construction entity, or empty if not found.
      */
     Optional<ConstructionEntity> findByPlotId(Long plotId);
+
+
 }

@@ -6,6 +6,8 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusReques
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Service interface for managing construction operations.
  */
@@ -30,4 +32,5 @@ public interface ConstructionService {
      */
     ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
 
+    List<ConstructionResponseDto> getAllConstructions();
 }
