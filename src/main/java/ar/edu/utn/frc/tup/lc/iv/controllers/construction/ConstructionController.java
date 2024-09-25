@@ -13,15 +13,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 /**
@@ -30,13 +28,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
+@CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
      * Service for handling construction logic.
      */
-    @Autowired
-    private ConstructionService constructionService;
+    private final ConstructionService constructionService;
 
     /**
      * Creates a new construction based on the provided request DTO.
@@ -81,8 +79,8 @@ public class ConstructionController {
     /**
      * Update the status of a construction.
      *
-     * @param constructionUpdateStatusRequestDto request data
-     *  containing construction ID and new status
+     * @param constructionUpdateStatusRequestDto request data containing
+     *                                           construction ID and new status
      * @return Response containing the updated construction status
      */
     @Operation(
