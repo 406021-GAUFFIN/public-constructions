@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
-@CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**

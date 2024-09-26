@@ -1,13 +1,7 @@
 package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,7 +44,7 @@ public class BaseEntity {
      * Username of the person who created the entity.
      */
     @Column(name = "CREATED_BY")
-    private String createdBy;
+    private Integer createdBy;
 
     /**
      * Date and time when the entity was last updated.
@@ -63,20 +57,17 @@ public class BaseEntity {
      * Username of the person who last updated the entity.
      */
     @Column(name = "LAST_UPDATED_BY")
-    private String lastUpdatedBy;
+    private Integer lastUpdatedBy;
 
+    @PrePersist
+    public void setCreatedDate() {
+        this.createdDate = LocalDateTime.now();
+    }
+    @PreUpdate
+    public void setLastUpdatedAt() {
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 
-    /**
-     * Transient field to hold the username for logging purposes.
-     */
-    @Transient
-    private String userName;
-
-    /**
-     * Transient field to hold log information for the entity.
-     */
-    @Transient
-    private String log;
 
 
 

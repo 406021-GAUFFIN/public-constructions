@@ -2,11 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.advice;
 
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
-import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
-import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
+import ar.edu.utn.frc.tup.lc.iv.error.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -193,5 +189,45 @@ public class ApiExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(ContactServiceException.class)
+    public ResponseEntity<ErrorApi> handleContactServiceException(ContactServiceException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .error(HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+    @ExceptionHandler(WorkerAlreadyExistsException.class)
+    public ResponseEntity<ErrorApi> handleWorkerAlreadyExistsException(WorkerAlreadyExistsException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(WorkerCreationException.class)
+    public ResponseEntity<ErrorApi> handleWorkerCreationException(WorkerCreationException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
