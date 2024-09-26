@@ -17,7 +17,7 @@ public class ConstructionUpdateStatusRequestDto {
     /**
      * Unique identifier for the construction project.
      */
-    @JsonProperty("construction-id")
+    @JsonProperty("construction_id")
     private Long constructionId;
 
     /**

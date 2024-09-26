@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(properties = {
         "cadastre.url = http://localhost:8080",
+        "contacts.url = http://localhost:8081"
 })
 public class ConstructionStatusTest {
 

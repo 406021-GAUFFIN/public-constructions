@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = {
         "cadastre.url = http://localhost:8080",
+        "contacts.url = http://localhost:8081"
 })
 class ConstructionControllerTest {
 
