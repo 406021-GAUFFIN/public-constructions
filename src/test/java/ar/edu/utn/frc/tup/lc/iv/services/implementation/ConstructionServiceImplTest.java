@@ -31,7 +31,10 @@ import java.util.Optional;
  * This class tests the methods responsible for
  * registering constructions and updating their statuses.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+        "cadastre.url = http://localhost:8080",
+        "contacts.url = http://localhost:8081"
+})
 class ConstructionServiceImplTest {
     @MockBean
     private ConstructionRepository constructionRepository;

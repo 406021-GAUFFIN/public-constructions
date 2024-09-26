@@ -2,7 +2,14 @@ package ar.edu.utn.frc.tup.lc.iv.advice;
 
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.error.*;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.ContactServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerCreationException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -191,6 +198,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
+    /**
+     * Handles {@link ContactServiceException}.
+     *
+     * @param ex the exception
+     * @return a 503 Service Unavailable response
+     */
     @ExceptionHandler(ContactServiceException.class)
     public ResponseEntity<ErrorApi> handleContactServiceException(ContactServiceException ex) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
@@ -204,6 +217,12 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
+    /**
+     * Handles {@link WorkerAlreadyExistsException}.
+     *
+     * @param ex the exception
+     * @return a 409 Conflict response
+     */
     @ExceptionHandler(WorkerAlreadyExistsException.class)
     public ResponseEntity<ErrorApi> handleWorkerAlreadyExistsException(WorkerAlreadyExistsException ex) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
@@ -217,6 +236,12 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+    /**
+     * Handles {@link WorkerCreationException}.
+     *
+     * @param ex the exception
+     * @return a 500 Internal Server Error response
+     */
     @ExceptionHandler(WorkerCreationException.class)
     public ResponseEntity<ErrorApi> handleWorkerCreationException(WorkerCreationException ex) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));

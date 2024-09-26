@@ -1,7 +1,15 @@
 package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,16 +66,23 @@ public class BaseEntity {
      */
     @Column(name = "LAST_UPDATED_BY")
     private Integer lastUpdatedBy;
-
+    /**
+     * Sets the creation date to the current date
+     * and time before the entity is persisted.
+     */
     @PrePersist
     public void setCreatedDate() {
         this.createdDate = LocalDateTime.now();
     }
+
+    /**
+     * Updates the last updated date to the current date
+     * and time before the entity is updated.
+     */
     @PreUpdate
     public void setLastUpdatedAt() {
         this.lastUpdatedAt = LocalDateTime.now();
     }
-
 
 
 

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO for worker specialization type request data.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

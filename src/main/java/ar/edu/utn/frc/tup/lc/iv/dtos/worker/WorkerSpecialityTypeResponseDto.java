@@ -1,14 +1,12 @@
 package ar.edu.utn.frc.tup.lc.iv.dtos.worker;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO for worker specialization type response data.
+ */
 @Setter
 @Getter
 @NoArgsConstructor
