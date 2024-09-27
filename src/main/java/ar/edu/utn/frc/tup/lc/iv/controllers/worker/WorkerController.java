@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+
+
 /**
  * Controller for managing workers.
  */
@@ -73,4 +75,6 @@ public class WorkerController {
         }
         return ResponseEntity.ok(workerService.createWorker(request));
     }
+
+
 }
