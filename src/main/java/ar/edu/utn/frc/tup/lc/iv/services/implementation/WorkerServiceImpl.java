@@ -67,18 +67,20 @@ public class  WorkerServiceImpl implements WorkerService {
         WorkerSpecialityEntity workerSpeciality = null; //here implement crud for worker speciality
         //and implement the same that constructionEntity
 
-        WorkerEntity workerEntity = modelMapper.map(workerRequestDto, WorkerEntity.class);
-        workerEntity.setConstruction(constructionEntity);
-        workerEntity.setWorkerSpecialityType(workerSpeciality);
-        workerEntity.setDocumentationWorker(new ArrayList<>());
-        workerEntity.setAvailableToWork(false);
+        WorkerEntity newWorker = modelMapper.map(workerRequestDto, WorkerEntity.class);
+        newWorker.setId(null);
+
+        newWorker.setConstruction(constructionEntity);
+        newWorker.setWorkerSpecialityType(workerSpeciality);
+        newWorker.setDocumentationWorker(new ArrayList<>());
+        newWorker.setAvailableToWork(false);
 
         ContactResponseDto contactResponseDto = createContact(workerRequestDto.getContact());
-        workerEntity.setContactId(contactResponseDto.getId());
-        workerEntity.setContactId(contactResponseDto.getId());
-        workerEntity.setCreatedBy(workerEntity.getCreatedBy());
+        newWorker.setContactId(contactResponseDto.getId());
+        newWorker.setContactId(contactResponseDto.getId());
+        newWorker.setCreatedBy(newWorker.getCreatedBy());
 
-        WorkerEntity workerSaved = workerRepository.save(workerEntity);
+        WorkerEntity workerSaved = workerRepository.save(newWorker);
 
         WorkerResponseDto response = modelMapper.map(workerSaved, WorkerResponseDto.class);
         response.setContact(modelMapper.map(contactResponseDto, ContactRequestDto.class));
@@ -88,6 +90,8 @@ public class  WorkerServiceImpl implements WorkerService {
 
     }
 
+
+
     /**
      * Validates the existence of a worker by CUIL or Document.
      * @param workerRequestDto the worker request data
@@ -95,9 +99,13 @@ public class  WorkerServiceImpl implements WorkerService {
     private void validateUserExistence(WorkerRequestDto workerRequestDto) {
         checkCuilAndDocumentNotNull(workerRequestDto);
 
-        validateExistingCuil(workerRequestDto.getCuil());
+        if (workerRequestDto.getCuil() != null) {
+            validateExistingCuil(workerRequestDto.getCuil());
+        }
 
-        validateExistingDocument(workerRequestDto.getDocument());
+        if (workerRequestDto.getDocument() != null) {
+            validateExistingDocument(workerRequestDto.getDocument());
+        }
 
         if (workerRequestDto.getDocument() != null) {
             validateCuilContainsDocument(workerRequestDto.getDocument());
@@ -155,10 +163,7 @@ public class  WorkerServiceImpl implements WorkerService {
      */
     private void validateDocumentContainsCuil(String cuil) {
         String documentInsideCuil = cuil.substring(2, cuil.length() - 1);
-        List<WorkerEntity> workersWithMatchingDocument = workerRepository.findWorkerEntityByDocumentContaining(documentInsideCuil);
-        if (!workersWithMatchingDocument.isEmpty()) {
-            throw new WorkerAlreadyExistsException("A document exists that contains the provided CUIL number.");
-        }
+        validateCuilContainsDocument(documentInsideCuil);
     }
 
     /**
@@ -169,4 +174,5 @@ public class  WorkerServiceImpl implements WorkerService {
     private ContactResponseDto createContact(ContactRequestDto contactRequestDto) {
         return contactsClient.getContact(contactRequestDto);
     }
+
 }
