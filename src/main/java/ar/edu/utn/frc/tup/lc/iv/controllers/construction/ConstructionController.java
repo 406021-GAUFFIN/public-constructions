@@ -126,11 +126,20 @@ public class ConstructionController {
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);
     }
 
-    @GetMapping("/get")
-    public List<ConstructionResponseDto> getAllConstructions() {
+    /*@GetMapping("/get")
+    public List<ConstructionResponseDto> getAllConstructionss() {
         return constructionService.getAllConstructions();
+    }*/
+
+    @GetMapping("/get")
+    public ResponseEntity<List<ConstructionResponseDto>> getAllConstructions() {
+        return ResponseEntity.ok(constructionService.getAllConstructions());
     }
 
+    @GetMapping("/constructions/{id}")
+    public ResponseEntity getConstructionById(@PathVariable Long id) {
+        return ResponseEntity.ok(constructionService.getConstructionById(id));
+    }
 
 
 }

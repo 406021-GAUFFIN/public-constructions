@@ -126,10 +126,20 @@ public class ConstructionServiceImpl implements ConstructionService {
     public List<ConstructionResponseDto> getAllConstructions() {
         List<ConstructionEntity> constructions = constructionRepository.findAll();
 
-        // Mapeamos cada entidad a su DTO
+
         return constructions.stream()
                 .map(construction -> modelMapper.map(construction, ConstructionResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ConstructionResponseDto getConstructionById(Long id) {
+
+        ConstructionEntity construction = constructionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Construction not found with ID: " + id));
+
+
+        return modelMapper.map(construction, ConstructionResponseDto.class);
     }
 
 

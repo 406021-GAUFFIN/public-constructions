@@ -33,4 +33,6 @@ public interface ConstructionService {
     ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
 
     List<ConstructionResponseDto> getAllConstructions();
+
+    ConstructionResponseDto getConstructionById(Long id);
 }
