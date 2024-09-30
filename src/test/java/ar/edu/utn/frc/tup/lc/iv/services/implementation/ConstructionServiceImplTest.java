@@ -9,6 +9,7 @@ import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
+import ar.edu.utn.frc.tup.lc.iv.services.interfaces.WorkerDocumentationService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ class ConstructionServiceImplTest {
     @Qualifier("modelMapper")
     @Autowired
     private ModelMapper modelMapper;
+
+
 
     /**
      * Tests the successful registration of a construction.
@@ -136,6 +139,7 @@ class ConstructionServiceImplTest {
 
         assertEquals("Construction with ID " + constructionId + " not found.", exception.getMessage());
     }
+
 
 }
 
