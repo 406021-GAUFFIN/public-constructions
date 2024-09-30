@@ -150,13 +150,14 @@ public class DocumentationTypeController {
             )
     })
     @PostMapping
-    public ResponseEntity<DocumentationType> createDocumentationType(@RequestBody @Valid DocumentationTypeRequestDto saveDocumentationType) {
+    public ResponseEntity<DocumentationType> createDocumentationType(@RequestBody @Valid DocumentationTypeRequestDto
+                                                                                 saveDocumentationType) {
         return ResponseEntity.ok(documentationTypeService.createDocumentationType(saveDocumentationType));
     }
 
     /**
      * Update the status of a documentation type.
-     *
+     * @param id the ID of the documentation type to be updated
      * @param saveDocumentationType request data containing
      *                              documentation type ID and new details
      * @return Response containing the updated documentation type.
