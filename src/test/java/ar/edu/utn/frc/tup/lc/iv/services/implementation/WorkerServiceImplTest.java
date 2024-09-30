@@ -64,7 +64,7 @@ public class WorkerServiceImplTest {
     @Mock
     private ConstructionRepository constructionRepository;
 
-    @Mock
+    @MockBean
     private AccessesClient accessesClient;
 
 
