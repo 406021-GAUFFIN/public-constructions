@@ -1,4 +1,4 @@
-package ar.edu.utn.frc.tup.lc.iv.dtos.external;
+package ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

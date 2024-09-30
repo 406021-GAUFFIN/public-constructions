@@ -1,8 +1,12 @@
 package ar.edu.utn.frc.tup.lc.iv.controllers.worker;
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.AuthorizationRangeResponse;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.RegisterAuthorizationRangesDTO;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.worker.documentation.WorkerDocumentationRequestDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.worker.documentation.WorkerDocumentationResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.WorkerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,12 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -74,6 +73,15 @@ public class WorkerController {
             request.setDocument(null);
         }
         return ResponseEntity.ok(workerService.createWorker(request));
+    }
+    @PostMapping("/documentation")
+    public ResponseEntity<WorkerDocumentationResponseDto> addDocumentation(@RequestBody WorkerDocumentationRequestDto request) {
+        return ResponseEntity.ok(workerService.addWorkerDocumentation(request));
+    }
+
+    @PostMapping("/allow-access/{workerId}")
+    public ResponseEntity<AuthorizationRangeResponse> allowWorkerAccess(@RequestParam String comment, @PathVariable Long workerId){
+        return ResponseEntity.ok(workerService.allowWorkerAccess(workerId,comment));
     }
 
 

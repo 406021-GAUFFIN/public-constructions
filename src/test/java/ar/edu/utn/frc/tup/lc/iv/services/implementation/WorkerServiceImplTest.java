@@ -2,8 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
 
 import ar.edu.utn.frc.tup.lc.iv.clients.ContactsClient;
-import ar.edu.utn.frc.tup.lc.iv.clients.PlotClient;
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.ContactResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;

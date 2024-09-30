@@ -1,23 +1,17 @@
 package ar.edu.utn.frc.tup.lc.iv.clients;
 
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.AuthorizationRangeResponse;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.RegisterAuthorizationRangesDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-
-/**
- * Client to interact with the external Contacts service.
- */
-
 @Component
 @RequiredArgsConstructor
-public class ContactsClient {
-
+public class AccessesClient {
     /**
      * WebClient for making HTTP requests.
      */
@@ -26,8 +20,8 @@ public class ContactsClient {
     /**
      * Base URL for the Contacts service.
      */
-    @Value("${contacts.url}")
-    private String contactsBaseUrl;
+    @Value("${accesses.url}")
+    private String accessesBaseUrl;
 
     /**
      * Sends a POST request to Contacts service.
@@ -35,14 +29,14 @@ public class ContactsClient {
      * @param request contact request DTO
      * @return response DTO
      */
-    public ContactResponseDto getContact(ContactRequestDto request) {
-        request.setContactType("PHONE");
+    public AuthorizationRangeResponse allowAccess(RegisterAuthorizationRangesDTO request) {
 
-        Mono<ContactResponseDto> response = webClient.post()
-                .uri(contactsBaseUrl + "/contacts")
+
+        Mono<AuthorizationRangeResponse> response = webClient.post()
+                .uri(accessesBaseUrl + "/authorized-ranges/register")
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(ContactResponseDto.class);
+                .bodyToMono(AuthorizationRangeResponse.class);
         return response.block();
     }
 }

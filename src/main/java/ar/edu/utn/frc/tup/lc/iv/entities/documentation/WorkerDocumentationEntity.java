@@ -12,9 +12,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
+import org.springframework.cglib.core.Local;
 
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 /**
  * Entity representing documentation related to a worker.
@@ -36,20 +38,20 @@ public class WorkerDocumentationEntity extends BaseEntity {
      * Expiration date of the documentation.
      */
     @Column(name = "EXPIRE_DATE")
-    private Date expireDate;
+    private LocalDate expireDate;
     /**
      * Path or URL to the ART
      * (Aseguradora de Riesgos del Trabajo) document.
      */
     @Column(name = "ART_DOCUMENT_PATH")
-    private String artDocumentPath;
+    private String artDocumentationPath;
 
     /**
      * Path or URL to the CAT
      * (Certificado de Alta Temprana) document.
      */
     @Column(name = "CAT_DOCUMENT_PATH")
-    private String catDocumentPath;
+    private String catDocumentationPath;
 
     /**
      * Worker to whom this documentation belongs.
