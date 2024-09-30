@@ -22,7 +22,7 @@ public class WorkerAvailabilityService {
     private WorkerRepository workerRepository;
 
 
-    @Scheduled(cron = "0 20 18 * * ?") // 24 hours = 86400000 ms
+    @Scheduled(cron = "0 00 24 * * ?") // 24 hours = 86400000 ms
     public void checkWorkerDocumentation() {
 
         List<WorkerEntity> workers = workerRepository.findAll();
