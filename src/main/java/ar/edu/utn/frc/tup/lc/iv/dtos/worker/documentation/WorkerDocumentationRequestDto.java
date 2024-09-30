@@ -7,6 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Data Transfer Object for worker documentation requests.
+ * This class is used to encapsulate the information required to add
+ * documentation for a specific worker, including expiration dates
+ * and document paths.
+ */
 @Setter
 @Getter
 @NoArgsConstructor
@@ -41,9 +47,10 @@ public class WorkerDocumentationRequestDto {
     @JsonProperty("worker_id")
     private Long workerId;
 
-    @NotNull(message = " created_by is required")
+    /**
+     * ID of the user who created this documentation entry.
+     */
+    @NotNull(message = "created_by is required")
     @JsonProperty("created_by")
     private Integer createdBy;
 }
-
-

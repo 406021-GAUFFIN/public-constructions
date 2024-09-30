@@ -2,7 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
 import ar.edu.utn.frc.tup.lc.iv.clients.AccessesClient;
 import ar.edu.utn.frc.tup.lc.iv.clients.ContactsClient;
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.AuthorizationRangeResponse;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.AuthorizationRangeResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.RegisterAuthorizationRangesDTO;
 import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactResponseDto;
@@ -63,9 +63,30 @@ public class  WorkerServiceImpl implements WorkerService {
      */
     private final ContactsClient contactsClient;
 
+
+    /**
+     * Client for interacting with the Accesses microservice.
+     */
     private final AccessesClient accessesClient;
 
+    /**
+     * Service for interacting with the documentation service.
+     */
     private final WorkerDocumentationService workerDocumentationService;
+
+    /**
+     * The hour at which work starts for visitors.
+     * This constant represents the start time of the
+     * workday in 24-hour format.
+     */
+    private static final int WORK_START_HOUR = 8;
+
+    /**
+     * The hour at which work ends for visitors.
+     * This constant represents the end time of
+     * the workday in 24-hour format.
+     */
+    private static final int WORK_END_HOUR = 18;
 
 
     /**
@@ -107,6 +128,14 @@ public class  WorkerServiceImpl implements WorkerService {
 
     }
 
+    /**
+     * Adds documentation for a worker and updates their availability status.
+     *
+     * @param workerDocumentationRequestDto DTO containing worker
+     *                                      documentation details.
+     * @return WorkerDocumentationResponseDto containing created worker.
+     * @throws EntityNotFoundException if the worker is not found.
+     */
     @Override
     @Transactional
     public WorkerDocumentationResponseDto addWorkerDocumentation(WorkerDocumentationRequestDto workerDocumentationRequestDto) {
@@ -219,8 +248,16 @@ public class  WorkerServiceImpl implements WorkerService {
         return contactsClient.getContact(contactRequestDto);
     }
 
+    /**
+     * Allows access for a worker by creating an authorization request.
+     * @param workerId ID of the worker requesting access.
+     * @param comment Comment associated with the authorization request.
+     * @return AuthorizationRangeResponseDto containing the client response.
+     * @throws EntityNotFoundException if the worker is not found.
+     * @throws WorkerNotAvailableException if the worker is not available to work.
+     */
     @Override
-    public AuthorizationRangeResponse allowWorkerAccess(Long workerId, String comment){
+    public AuthorizationRangeResponseDto allowWorkerAccess(Long workerId, String comment) {
 
         RegisterAuthorizationRangesDTO request = new RegisterAuthorizationRangesDTO();
 
@@ -237,11 +274,11 @@ public class  WorkerServiceImpl implements WorkerService {
 
         if (workerEntity.get().getDocument() != null) {
             request.setExternalId(Long.valueOf(workerEntity.get().getDocument()));
-        }else{
+        } else {
             request.setExternalId(Long.valueOf(workerEntity.get().getCuil()));
         }
 
-        request.setAuthTypeId(1L); 
+        request.setAuthTypeId(1L);
         request.setPlotId(workerEntity.get().getConstruction().getPlotId());
         request.setComment(comment);
         request.setDateFrom(LocalDate.now());
@@ -255,10 +292,10 @@ public class  WorkerServiceImpl implements WorkerService {
         );
         request.setVisitorId(1L); //this is hardcoded here. Here do a get of visitors and create the visitor
         request.setDayOfWeeks(daysOfWeek);
-        request.setHourFrom(LocalTime.of(8,0));
-        request.setHourTo(LocalTime.of(18,0));
+        request.setHourFrom(LocalTime.of(WORK_START_HOUR, 0));
+        request.setHourTo(LocalTime.of(WORK_END_HOUR, 0));
 
-       return accessesClient.allowAccess(request);
+        return accessesClient.allowAccess(request);
 
 
     }

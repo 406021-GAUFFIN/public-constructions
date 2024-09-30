@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+/**
+ * Data Transfer Object for worker documentation responses.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

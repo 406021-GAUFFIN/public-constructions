@@ -1,6 +1,6 @@
 package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
-import ar.edu.utn.frc.tup.lc.iv.clients.PlotClient;
+import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
@@ -42,7 +42,7 @@ public class ConstructionServiceImpl implements ConstructionService {
     /**
      * Client for interacting with the Plot microservice.
      */
-    private final PlotClient plotClient;
+    private final CadastreClient cadastreClient;
 
 
     /**
@@ -68,7 +68,7 @@ public class ConstructionServiceImpl implements ConstructionService {
     @Override
     @Transactional
     public ConstructionResponseDto registerConstruction(ConstructionRequestDto constructionRequest) {
-        if (!plotClient.plotExists(constructionRequest.getPlotId())) {
+        if (!cadastreClient.plotExists(constructionRequest.getPlotId())) {
             throw new PlotNotFoundException("The plot with ID " + constructionRequest.getPlotId() + " does not exist.");
         }
 

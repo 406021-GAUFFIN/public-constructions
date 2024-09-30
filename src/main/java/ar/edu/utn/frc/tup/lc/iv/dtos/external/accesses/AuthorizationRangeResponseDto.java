@@ -1,6 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * Data Transfer Object for authorization response.
+ */
 
 @NoArgsConstructor
 @Setter
 @Getter
-public class AuthorizationRangeResponse {
+public class AuthorizationRangeResponseDto {
     /**
      * The ID of the user who created the entity.
      */

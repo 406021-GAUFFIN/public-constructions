@@ -1,6 +1,6 @@
 package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
-import ar.edu.utn.frc.tup.lc.iv.clients.PlotClient;
+import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
@@ -33,14 +33,15 @@ import java.util.Optional;
  */
 @SpringBootTest(properties = {
         "cadastre.url = http://localhost:8080",
-        "contacts.url = http://localhost:8081"
+        "contacts.url = http://localhost:8081",
+        "accesses.url = http://localhost:8085"
 })
 class ConstructionServiceImplTest {
     @MockBean
     private ConstructionRepository constructionRepository;
 
     @MockBean
-    private PlotClient plotClient;
+    private CadastreClient cadastreClient;
 
     @Autowired
     private ConstructionServiceImpl constructionService;
@@ -75,7 +76,7 @@ class ConstructionServiceImplTest {
         constructionEntity.setConstructionStatus(ConstructionStatus.PLANNED);
 
         // When
-        when(plotClient.plotExists(constructionRequest.getPlotId())).thenReturn(true);
+        when(cadastreClient.plotExists(constructionRequest.getPlotId())).thenReturn(true);
         when(constructionRepository.findByPlotId(constructionRequest.getPlotId())).thenReturn(Optional.empty());
         when(constructionRepository.save(any(ConstructionEntity.class))).thenReturn(constructionEntity);
 
@@ -87,7 +88,7 @@ class ConstructionServiceImplTest {
         assertEquals(constructionEntity.getProjectName(), actualResponse.getProjectName());
         assertEquals(constructionEntity.getPlotId(), actualResponse.getPlotId());
 
-        verify(plotClient).plotExists(constructionRequest.getPlotId());
+        verify(cadastreClient).plotExists(constructionRequest.getPlotId());
         verify(constructionRepository).findByPlotId(constructionRequest.getPlotId());
         verify(constructionRepository).save(any(ConstructionEntity.class));
     }
