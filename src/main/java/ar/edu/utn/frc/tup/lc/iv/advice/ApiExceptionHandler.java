@@ -2,7 +2,16 @@ package ar.edu.utn.frc.tup.lc.iv.advice;
 
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.error.*;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.ContactServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerCreationException;
+import ar.edu.utn.frc.tup.lc.iv.error.DocumentationTypeNotFoundException;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
