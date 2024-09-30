@@ -71,12 +71,12 @@ public class WorkerServiceImplTest {
     @Test
     public void testCreateWorkerWithDocument() {
         WorkerRequestDto workerRequestDto = new WorkerRequestDto();
-        workerRequestDto.setConstructionId(1L);
+        workerRequestDto.setConstructionId(808L);
         workerRequestDto.setContact(null);
         workerRequestDto.setDocument("45082541");
 
         ConstructionEntity constructionEntity = new ConstructionEntity();
-        constructionEntity.setId(1L);
+        constructionEntity.setId(808L);
 
         ContactResponseDto contactResponseDto = new ContactResponseDto();
         contactResponseDto.setId(1);
@@ -91,7 +91,7 @@ public class WorkerServiceImplTest {
         expectedResponse.setCuil(null);
         expectedResponse.setDocument("45082541");
 
-        when(constructionRepository.findById(1L)).thenReturn(Optional.of(constructionEntity));
+        when(constructionRepository.findById(808L)).thenReturn(Optional.of(constructionEntity));
         when(contactsClient.getContact(any())).thenReturn(contactResponseDto);
         when(workerRepository.save(any(WorkerEntity.class))).thenReturn(workerEntity);
 
@@ -108,18 +108,18 @@ public class WorkerServiceImplTest {
     @Test
     public void testCreateWorkerWithCuil() {
         WorkerRequestDto workerRequestDto = new WorkerRequestDto();
-        workerRequestDto.setConstructionId(1L);
+        workerRequestDto.setConstructionId(808L);
         workerRequestDto.setContact(null);
         workerRequestDto.setCuil("20450825418");
 
         ConstructionEntity constructionEntity = new ConstructionEntity();
-        constructionEntity.setId(1L);
+        constructionEntity.setId(808L);
 
         ContactResponseDto contactResponseDto = new ContactResponseDto();
         contactResponseDto.setId(1);
 
         WorkerEntity workerEntity = new WorkerEntity();
-        workerEntity.setId(1L);
+        workerEntity.setId(808L);
         workerEntity.setContactId(contactResponseDto.getId());
         workerEntity.setCuil("20450825418");
 
@@ -128,7 +128,7 @@ public class WorkerServiceImplTest {
         expectedResponse.setCuil(null);
         expectedResponse.setCuil("20450825418");
 
-        when(constructionRepository.findById(1L)).thenReturn(Optional.of(constructionEntity));
+        when(constructionRepository.findById(808L)).thenReturn(Optional.of(constructionEntity));
         when(contactsClient.getContact(any())).thenReturn(contactResponseDto);
         when(workerRepository.save(any(WorkerEntity.class))).thenReturn(workerEntity);
 

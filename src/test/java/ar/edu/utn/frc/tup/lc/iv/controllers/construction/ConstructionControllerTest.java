@@ -1,11 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.controllers.construction;
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
-import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
-import ar.edu.utn.frc.tup.lc.iv.models.construction.Construction;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = {
         "cadastre.url = http://localhost:8080",

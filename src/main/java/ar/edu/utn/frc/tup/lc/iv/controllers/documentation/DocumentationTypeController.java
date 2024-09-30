@@ -2,7 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.controllers.documentation;
 
 import ar.edu.utn.frc.tup.lc.iv.controllers.api_response.ApiResponseConstants;
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.documentation.DocumentationTypeRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.models.documentation.DocumentationType;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.DocumentationTypeService;
@@ -171,7 +171,7 @@ public class DocumentationTypeController {
                     responseCode = ApiResponseConstants.OK,
                     description = ApiResponseConstants.OK_MESSAGE,
                     content = @Content(
-                            schema = @Schema(implementation = ConstructionUpdateStatusResponseDto.class)
+                            schema = @Schema(implementation = ConstructionResponseDto.class)
                     )
             ),
             @ApiResponse(

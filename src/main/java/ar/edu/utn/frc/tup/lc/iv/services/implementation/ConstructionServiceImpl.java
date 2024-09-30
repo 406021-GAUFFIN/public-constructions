@@ -4,7 +4,6 @@ import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
@@ -100,8 +99,8 @@ public class ConstructionServiceImpl implements ConstructionService {
      */
     @Override
     @Transactional
-    public ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
-        ConstructionUpdateStatusResponseDto response = new ConstructionUpdateStatusResponseDto();
+    public ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
+
 
         ConstructionEntity constructionEntity = constructionRepository.findById(updateStatusRequestDto.getConstructionId())
                 .orElseThrow(() -> new ConstructionNotFoundException(
@@ -115,10 +114,9 @@ public class ConstructionServiceImpl implements ConstructionService {
         constructionEntity.setConstructionStatus(newStatus);
         newStatus.handleStateTransition(constructionEntity);
 
-        constructionRepository.save(constructionEntity);
+        ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
+        return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
 
-        response.setMessage("Construction updated with ID " + updateStatusRequestDto.getConstructionId());
-        return response;
 
 
     }

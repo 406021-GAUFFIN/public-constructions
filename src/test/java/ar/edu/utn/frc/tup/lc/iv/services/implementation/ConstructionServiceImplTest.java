@@ -4,12 +4,10 @@ import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
-import ar.edu.utn.frc.tup.lc.iv.services.interfaces.WorkerDocumentationService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,18 +102,23 @@ class ConstructionServiceImplTest {
     public void testUpdateConstructionStatus_Success() {
         Long constructionId = 1L;
         ConstructionEntity existingConstruction = new ConstructionEntity();
-        existingConstruction.setConstructionStatus(ConstructionStatus.PLANNED); // Set an initial status
+        existingConstruction.setConstructionStatus(ConstructionStatus.PLANNED);
+
+        ConstructionEntity updatedConstruction = new ConstructionEntity();
+        updatedConstruction.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
+
 
         ConstructionUpdateStatusRequestDto requestDto = new ConstructionUpdateStatusRequestDto();
         requestDto.setConstructionId(constructionId);
         requestDto.setStatus(ConstructionStatus.IN_PROGRESS);
 
         when(constructionRepository.findById(constructionId)).thenReturn(Optional.of(existingConstruction));
+        when(constructionRepository.save(any(ConstructionEntity.class))).thenReturn(updatedConstruction);
 
-        ConstructionUpdateStatusResponseDto response = constructionService.updateConstructionStatus(requestDto);
+        ConstructionResponseDto response = constructionService.updateConstructionStatus(requestDto);
 
         assertNotNull(response);
-        assertEquals("Construction updated with ID " + constructionId, response.getMessage());
+        assertEquals(ConstructionStatus.IN_PROGRESS, response.getConstructionStatus());
         assertEquals(ConstructionStatus.IN_PROGRESS, existingConstruction.getConstructionStatus());
         verify(constructionRepository).save(existingConstruction); // Verify that save was called
     }
