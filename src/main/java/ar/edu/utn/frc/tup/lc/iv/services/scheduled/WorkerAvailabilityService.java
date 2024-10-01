@@ -4,6 +4,7 @@ import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
 import ar.edu.utn.frc.tup.lc.iv.repositories.WorkerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class WorkerAvailabilityService {
     /**
      * Repository for accessing worker data.
      */
+    @Autowired
     private final WorkerRepository workerSource;
 
 
@@ -49,6 +51,8 @@ public class WorkerAvailabilityService {
                     worker.setAvailableToWork(true);
                     workerSource.save(worker);
                 }
+            } else {
+                worker.setAvailableToWork(false);
             }
         }
     }
