@@ -2,16 +2,17 @@ package ar.edu.utn.frc.tup.lc.iv.advice;
 
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
-import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
-import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
 import ar.edu.utn.frc.tup.lc.iv.error.ContactServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.PlotServiceException;
+import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerAlreadyExistsException;
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerCreationException;
 import ar.edu.utn.frc.tup.lc.iv.error.DocumentationTypeNotFoundException;
 
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerNotAvailableException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -256,6 +257,46 @@ public class ApiExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Handles IllegalArgumentException and returns a formatted error response.
+     *
+     * @param ex the IllegalArgumentException thrown
+     * @return ResponseEntity containing the error details and BAD REQUEST status
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorApi> handleIllegalArgumentException(IllegalArgumentException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles WorkerNotAvailableException and returns a formatted error response.
+     *
+     * @param ex the WorkerNotAvailableException thrown
+     * @return ResponseEntity containing the error details and BAD REQUEST status
+     */
+    @ExceptionHandler(WorkerNotAvailableException.class)
+    public ResponseEntity<ErrorApi> handleWorkerNotAvailableException(WorkerNotAvailableException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi error = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**

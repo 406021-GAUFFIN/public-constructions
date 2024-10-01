@@ -1,6 +1,6 @@
 package ar.edu.utn.frc.tup.lc.iv.dtos.worker;
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.ContactRequestDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactRequestDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

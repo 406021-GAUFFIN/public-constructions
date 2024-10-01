@@ -1,24 +1,38 @@
 package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
+import ar.edu.utn.frc.tup.lc.iv.clients.AccessesClient;
 import ar.edu.utn.frc.tup.lc.iv.clients.ContactsClient;
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.ContactRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.external.ContactResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.AuthorizationRangeResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses.RegisterAuthorizationRangesDTO;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactRequestDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts.ContactResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.worker.WorkerResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.worker.documentation.WorkerDocumentationRequestDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.worker.documentation.WorkerDocumentationResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
+import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.worker.WorkerSpecialityEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerAlreadyExistsException;
+import ar.edu.utn.frc.tup.lc.iv.error.WorkerNotAvailableException;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.repositories.WorkerRepository;
+import ar.edu.utn.frc.tup.lc.iv.services.interfaces.WorkerDocumentationService;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.WorkerService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +63,30 @@ public class  WorkerServiceImpl implements WorkerService {
      */
     private final ContactsClient contactsClient;
 
+
+    /**
+     * Client for interacting with the Accesses microservice.
+     */
+    private final AccessesClient accessesClient;
+
+    /**
+     * Service for interacting with the documentation service.
+     */
+    private final WorkerDocumentationService workerDocumentationService;
+
+    /**
+     * The hour at which work starts for visitors.
+     * This constant represents the start time of the
+     * workday in 24-hour format.
+     */
+    private static final int WORK_START_HOUR = 8;
+
+    /**
+     * The hour at which work ends for visitors.
+     * This constant represents the end time of
+     * the workday in 24-hour format.
+     */
+    private static final int WORK_END_HOUR = 18;
 
 
     /**
@@ -90,6 +128,41 @@ public class  WorkerServiceImpl implements WorkerService {
 
     }
 
+    /**
+     * Adds documentation for a worker and updates their availability status.
+     *
+     * @param workerDocumentationRequestDto DTO containing worker
+     *                                      documentation details.
+     * @return WorkerDocumentationResponseDto containing created worker.
+     * @throws EntityNotFoundException if the worker is not found.
+     */
+    @Override
+    @Transactional
+    public WorkerDocumentationResponseDto addWorkerDocumentation(WorkerDocumentationRequestDto workerDocumentationRequestDto) {
+        Optional<WorkerEntity> workerEntity = workerRepository.findById(workerDocumentationRequestDto.getWorkerId());
+
+        if (workerEntity.isEmpty()) {
+            throw new EntityNotFoundException("Worker with id " + workerDocumentationRequestDto.getWorkerId() + " not found");
+        }
+
+
+        WorkerEntity worker = workerEntity.get();
+        WorkerDocumentationEntity documentationToAdd = workerDocumentationService.createWorkerDocumentation(workerDocumentationRequestDto);
+        worker.getDocumentationWorker().add(documentationToAdd);
+        worker.setAvailableToWork(true);
+        WorkerEntity savedWorker = workerRepository.save(worker);
+        String workerFullName = savedWorker.getName() + " " + savedWorker.getLastName();
+
+        WorkerDocumentationResponseDto response = modelMapper.map(documentationToAdd, WorkerDocumentationResponseDto.class);
+        response.setWorkerFullName(workerFullName);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        response.setExpireDate(documentationToAdd.getExpireDate().format(formatter));
+        response.setWorkerId(savedWorker.getId());
+
+        return response;
+
+    }
 
 
     /**
@@ -174,5 +247,58 @@ public class  WorkerServiceImpl implements WorkerService {
     private ContactResponseDto createContact(ContactRequestDto contactRequestDto) {
         return contactsClient.getContact(contactRequestDto);
     }
+
+    /**
+     * Allows access for a worker by creating an authorization request.
+     * @param workerId ID of the worker requesting access.
+     * @param comment Comment associated with the authorization request.
+     * @return AuthorizationRangeResponseDto containing the client response.
+     * @throws EntityNotFoundException if the worker is not found.
+     * @throws WorkerNotAvailableException if the worker is not available to work.
+     */
+    @Override
+    public AuthorizationRangeResponseDto allowWorkerAccess(Long workerId, String comment) {
+
+        RegisterAuthorizationRangesDTO request = new RegisterAuthorizationRangesDTO();
+
+        WorkerDocumentationEntity documentation = workerDocumentationService.getLatestWorkerDocumentation(workerId);
+        Optional<WorkerEntity> workerEntity = workerRepository.findById(workerId);
+        if (workerEntity.isEmpty()) {
+            throw new EntityNotFoundException("Worker with id " + workerId + " not found");
+        }
+        if (!workerEntity.get().getAvailableToWork()) {
+            throw new WorkerNotAvailableException("Worker with id " + workerId + " is not available to work");
+        }
+
+        request.setDateTo(documentation.getExpireDate());
+
+        if (workerEntity.get().getDocument() != null) {
+            request.setExternalId(Long.valueOf(workerEntity.get().getDocument()));
+        } else {
+            request.setExternalId(Long.valueOf(workerEntity.get().getCuil()));
+        }
+
+        request.setAuthTypeId(1L);
+        request.setPlotId(workerEntity.get().getConstruction().getPlotId());
+        request.setComment(comment);
+        request.setDateFrom(LocalDate.now());
+
+        List<DayOfWeek> daysOfWeek = Arrays.asList(
+                DayOfWeek.MONDAY,
+                DayOfWeek.TUESDAY,
+                DayOfWeek.WEDNESDAY,
+                DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY
+        );
+        request.setVisitorId(1L); //this is hardcoded here. Here do a get of visitors and create the visitor
+        request.setDayOfWeeks(daysOfWeek);
+        request.setHourFrom(LocalTime.of(WORK_START_HOUR, 0));
+        request.setHourTo(LocalTime.of(WORK_END_HOUR, 0));
+
+        return accessesClient.allowAccess(request);
+
+
+    }
+
 
 }

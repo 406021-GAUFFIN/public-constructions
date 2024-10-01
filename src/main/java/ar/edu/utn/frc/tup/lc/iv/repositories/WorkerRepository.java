@@ -36,12 +36,4 @@ public interface WorkerRepository extends JpaRepository<WorkerEntity, Long> {
      * @return A list of matching workers.
      */
     List<WorkerEntity> findWorkerEntityByCuilContaining(String document);
-
-    /**
-     * Finds workers whose document contains the specified CUIL.
-     *
-     * @param cuil The CUIL to check against documents.
-     * @return A list of matching workers.
-     */
-    List<WorkerEntity> findWorkerEntityByDocumentContaining(String cuil);
 }

@@ -3,14 +3,15 @@ package ar.edu.utn.frc.tup.lc.iv.entities.worker;
 import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -81,7 +82,7 @@ public class WorkerEntity extends BaseEntity {
      * List of documentation associated with the worker.
      */
 
-    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<WorkerDocumentationEntity> documentationWorker;
 
     /**

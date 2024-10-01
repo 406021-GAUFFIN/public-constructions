@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,properties = {
         "cadastre.url = http://localhost:8080",
-        "contacts.url = http://localhost:8081"
+        "contacts.url = http://localhost:8081",
+        "accesses.url = http://localhost:8085"
 })
 public class SpringDocConfigTest {
 
