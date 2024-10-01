@@ -4,7 +4,6 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
-@CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
@@ -92,7 +91,7 @@ public class ConstructionController {
                     responseCode = "200",
                     description = "Construction status updated successfully",
                     content = @Content(
-                            schema = @Schema(implementation = ConstructionUpdateStatusResponseDto.class)
+                            schema = @Schema(implementation = ConstructionResponseDto.class)
                     )
             ),
             @ApiResponse(
@@ -118,7 +117,7 @@ public class ConstructionController {
             )
     })
     @PutMapping("/status")
-    public ConstructionUpdateStatusResponseDto updateConstructionStatus(
+    public ConstructionResponseDto updateConstructionStatus(
             @RequestBody @Valid ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto) {
         constructionUpdateStatusRequestDto.setConstructionId(constructionUpdateStatusRequestDto.getConstructionId());
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);

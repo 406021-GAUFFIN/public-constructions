@@ -1,8 +1,7 @@
 package ar.edu.utn.frc.tup.lc.iv.advice;
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
-import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
-import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
+import ar.edu.utn.frc.tup.lc.iv.error.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +25,8 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(properties = {
         "cadastre.url = http://localhost:8080",
+        "contacts.url = http://localhost:8081",
+        "accesses.url = http://localhost:8085"
 })
 public class ApiExceptionHandlerTest {
 
@@ -138,6 +139,90 @@ public class ApiExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().getStatus());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), response.getBody().getError());
         assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandlePlotNotFoundException() {
+        PlotNotFoundException ex = new PlotNotFoundException("Plot not found");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handlePlotNotFoundException(ex);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Plot not found", response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandleConstructionAlreadyExistsException() {
+        ConstructionAlreadyExistsException ex = new ConstructionAlreadyExistsException("Construction already exists");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleConstructionAlreadyExistsException(ex);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.CONFLICT.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.CONFLICT.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Construction already exists", response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandlePlotServiceException() {
+        PlotServiceException ex = new PlotServiceException("Service unavailable");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handlePlotServiceException(ex);
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Service unavailable", response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandleContactServiceException() {
+        ContactServiceException ex = new ContactServiceException("Contact service unavailable");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleContactServiceException(ex);
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Contact service unavailable", response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandleWorkerAlreadyExistsException() {
+        WorkerAlreadyExistsException ex = new WorkerAlreadyExistsException("Worker already exists");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleWorkerAlreadyExistsException(ex);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.CONFLICT.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.CONFLICT.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Worker already exists", response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+    @Test
+    public void testHandleWorkerCreationException() {
+        WorkerCreationException ex = new WorkerCreationException("Worker creation failed");
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleWorkerCreationException(ex);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), response.getBody().getError());
+        assertEquals("Worker creation failed", response.getBody().getMessage());
         assertNotNull(response.getBody().getTimestamp());
     }
 

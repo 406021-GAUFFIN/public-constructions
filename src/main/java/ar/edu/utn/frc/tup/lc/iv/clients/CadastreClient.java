@@ -9,11 +9,11 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 
 /**
- * Client for interacting with the Plot microservice.
+ * Client for interacting with the Cadastre microservice.
  */
 @Component
 @RequiredArgsConstructor
-public class PlotClient {
+public class CadastreClient {
 
     /**
      * WebClient instance to make HTTP requests.
