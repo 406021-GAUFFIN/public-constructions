@@ -25,7 +25,6 @@ public interface ConstructionService {
      * @param constructionUpdateStatusRequestDto
      * DTO with construction ID and new status.
      * @return Response DTO indicating the status update result.
-     * @throws UpdateConstructionStatusException if the update fails.
      */
     ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
 

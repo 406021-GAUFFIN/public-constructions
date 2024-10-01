@@ -14,7 +14,7 @@ public class WebClientConfig {
 
     /**
      * WebClient bean to make HTTP requests.
-     * @param builder
+     * @param builder builder to build WebClient.
      * @return the WebClient instance.
      */
     @Bean
