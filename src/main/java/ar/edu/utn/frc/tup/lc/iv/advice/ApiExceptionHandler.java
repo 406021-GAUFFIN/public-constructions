@@ -11,6 +11,7 @@ import ar.edu.utn.frc.tup.lc.iv.error.UpdateConstructionStatusException;
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerAlreadyExistsException;
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerCreationException;
 import ar.edu.utn.frc.tup.lc.iv.error.DocumentationTypeNotFoundException;
+import ar.edu.utn.frc.tup.lc.iv.error.NoteNotFoundException;
 
 import ar.edu.utn.frc.tup.lc.iv.error.WorkerNotAvailableException;
 import lombok.Getter;
@@ -309,6 +310,28 @@ public class ApiExceptionHandler {
      */
     @ExceptionHandler(DocumentationTypeNotFoundException.class)
     public ResponseEntity<ErrorApi> handleDocumentationTypeNotFoundExceptionException(DocumentationTypeNotFoundException ex) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
+
+        ErrorApi errorApi = ErrorApi.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(errorApi, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles NoteNotFoundException
+     * and returns a structured error response.
+     *
+     * @param ex the exception to handle.
+     * @return a {@link ResponseEntity} with an {@link ErrorApi} object,
+     * status {@code 404 Not Found}
+     */
+    @ExceptionHandler(NoteNotFoundException.class)
+    public ResponseEntity<ErrorApi> handleNoteNotFoundExceptionException(NoteNotFoundException ex) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMATTER));
 
         ErrorApi errorApi = ErrorApi.builder()
