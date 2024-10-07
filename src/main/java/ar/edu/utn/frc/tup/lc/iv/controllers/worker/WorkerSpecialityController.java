@@ -185,7 +185,8 @@ public class WorkerSpecialityController {
             )
     })
     @PutMapping("/{id}")
-    public ResponseEntity<WorkerSpeciality> updateWorkerSpeciality(@PathVariable Long id, @RequestBody WorkerSpecialityRequestDto workerSpecialityRequestDto) {
+    public ResponseEntity<WorkerSpeciality> updateWorkerSpeciality(@PathVariable Long id,
+                                                                   @RequestBody WorkerSpecialityRequestDto workerSpecialityRequestDto) {
         return ResponseEntity.ok(workerSpecialityService.updateWorkerSpeciality(id, workerSpecialityRequestDto));
     }
 

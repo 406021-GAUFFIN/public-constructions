@@ -1,6 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.services.interfaces;
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.note.NoteRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.models.note.Note;
 import org.springframework.stereotype.Service;
 

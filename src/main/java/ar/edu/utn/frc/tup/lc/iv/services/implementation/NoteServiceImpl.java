@@ -1,6 +1,5 @@
 package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
-import ar.edu.utn.frc.tup.lc.iv.dtos.note.NoteRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.note.NoteEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.NoteNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.note.Note;

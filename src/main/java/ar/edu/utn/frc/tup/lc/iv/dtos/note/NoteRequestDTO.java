@@ -4,15 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
  * This class represents a note in the system.
  */
 @Setter
 @Getter
 @NoArgsConstructor
-public class NoteRequestDto {
-	/**
-	 * Description of the note.
-	 */
-	private String description;
+public class NoteRequestDTO {
+
+    /**
+     * Description of the note.
+     */
+    private String description;
 }
