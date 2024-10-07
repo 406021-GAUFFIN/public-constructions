@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class NoteRequestDTO {
+public class NoteRequestDto {
 
     /**
      * Description of the note.
