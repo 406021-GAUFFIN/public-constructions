@@ -5,7 +5,7 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
-import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
+import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,13 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
@@ -126,11 +126,6 @@ public class ConstructionController {
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);
     }
 
-    /*@GetMapping("/get")
-    public List<ConstructionResponseDto> getAllConstructionss() {
-        return constructionService.getAllConstructions();
-    }*/
-
     @GetMapping("/get")
     public ResponseEntity<List<ConstructionResponseDto>> getAllConstructions() {
         return ResponseEntity.ok(constructionService.getAllConstructions());
@@ -140,6 +135,32 @@ public class ConstructionController {
     public ResponseEntity getConstructionById(@PathVariable Long id) {
         return ResponseEntity.ok(constructionService.getConstructionById(id));
     }
+
+    @GetMapping("construction/pageable")
+    public ResponseEntity<List<ConstructionRequestDto>> getConstructionPageble(
+
+                @RequestParam(defaultValue = "0") int page,
+                @RequestParam(defaultValue = "10") int size,
+                @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
+                )
+    {
+        Pageable pageable = PageRequest.of(page, size);
+       return new ResponseEntity<>(constructionService.getAllConstructionsPage(pageable,  constructionStatuses ), HttpStatus.OK) ;
+    }
+
+
+//    @GetMapping("pageable/fine")
+//    public ResponseEntity<Page<FineDTO>> getFines(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(required = false) List<FineState> fineState,
+//            @RequestParam(required = false) List< Long> sanctionTypes,
+//            @RequestParam(required = false) Double price
+//
+//    ) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return new ResponseEntity<>(fineService.getAllFines(pageable, fineState, sanctionTypes,price ), HttpStatus.OK) ;
+//    }
 
 
 }

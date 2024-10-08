@@ -4,7 +4,10 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -35,4 +38,9 @@ public interface ConstructionService {
     List<ConstructionResponseDto> getAllConstructions();
 
     ConstructionResponseDto getConstructionById(Long id);
+
+    List<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
 }
+//
+//Page<FineDTO> getAllFines(Pageable pageable, List<FineState> fineState, List<Long> sanctionTypes, Double price);
+
