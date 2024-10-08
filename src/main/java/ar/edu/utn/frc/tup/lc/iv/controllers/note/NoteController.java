@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.controllers.note;
 
 import ar.edu.utn.frc.tup.lc.iv.controllers.api_response.ApiResponseConstants;
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
+import ar.edu.utn.frc.tup.lc.iv.dtos.note.NoteRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.models.note.Note;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.NoteService;
 import io.swagger.v3.oas.annotations.Operation;
