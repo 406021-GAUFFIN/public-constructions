@@ -72,7 +72,7 @@ entity "Worker" as worker {
   + created_date : DATE
   + last_modified_by : LocalDateTime
   + last_modified_date : LocalDateTime
-  + specialty : ENUM("Architect", "Engineer", "Surveyor", "QuantitySurveyor", "InteriorDesigner", "LandscapeArchitect", "Other")
+  + speciality : ENUM("Architect", "Engineer", "Surveyor", "QuantitySurveyor", "InteriorDesigner", "LandscapeArchitect", "Other")
 }
 
 
