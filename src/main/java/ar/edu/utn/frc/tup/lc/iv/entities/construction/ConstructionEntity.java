@@ -41,13 +41,6 @@ public class ConstructionEntity extends BaseEntity {
     static final String TABLE_NAME = "CONSTRUCTION";
 
     /**
-     * ID of the owner of the construction project.
-     */
-
-    @Column(name = "OWNER_ID")
-    private Long ownerId;
-
-    /**
      * ID of the plot where the construction takes place.
      */
    @Column(name = "PLOT_ID")

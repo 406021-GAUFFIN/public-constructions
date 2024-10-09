@@ -1,18 +1,19 @@
 package ar.edu.utn.frc.tup.lc.iv.entities;
 
 
+
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,14 +30,13 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Audited
 public class BaseEntity {
 
     /**
      * Unique identifier for the entity.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -50,7 +50,7 @@ public class BaseEntity {
      * Username of the person who created the entity.
      */
     @Column(name = "CREATED_BY")
-    private String createdBy;
+    private Integer createdBy;
 
     /**
      * Date and time when the entity was last updated.
@@ -63,20 +63,24 @@ public class BaseEntity {
      * Username of the person who last updated the entity.
      */
     @Column(name = "LAST_UPDATED_BY")
-    private String lastUpdatedBy;
-
+    private Integer lastUpdatedBy;
+    /**
+     * Sets the creation date to the current date
+     * and time before the entity is persisted.
+     */
+    @PrePersist
+    public void setCreatedDate() {
+        this.createdDate = LocalDateTime.now();
+    }
 
     /**
-     * Transient field to hold the username for logging purposes.
+     * Updates the last updated date to the current date
+     * and time before the entity is updated.
      */
-    @Transient
-    private String userName;
-
-    /**
-     * Transient field to hold log information for the entity.
-     */
-    @Transient
-    private String log;
+    @PreUpdate
+    public void setLastUpdatedAt() {
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 
 
 

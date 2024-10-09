@@ -22,6 +22,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 /**
@@ -30,13 +36,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
+    @CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
      * Service for handling construction logic.
      */
-    @Autowired
-    private ConstructionService constructionService;
+    private final ConstructionService constructionService;
 
     /**
      * Creates a new construction based on the provided request DTO.
@@ -81,8 +87,8 @@ public class ConstructionController {
     /**
      * Update the status of a construction.
      *
-     * @param constructionUpdateStatusRequestDto request data
-     *  containing construction ID and new status
+     * @param constructionUpdateStatusRequestDto request data containing
+     *                                           construction ID and new status
      * @return Response containing the updated construction status
      */
     @Operation(
@@ -94,7 +100,7 @@ public class ConstructionController {
                     responseCode = "200",
                     description = "Construction status updated successfully",
                     content = @Content(
-                            schema = @Schema(implementation = ConstructionUpdateStatusResponseDto.class)
+                            schema = @Schema(implementation = ConstructionResponseDto.class)
                     )
             ),
             @ApiResponse(
@@ -120,7 +126,7 @@ public class ConstructionController {
             )
     })
     @PutMapping("/status")
-    public ConstructionUpdateStatusResponseDto updateConstructionStatus(
+    public ConstructionResponseDto updateConstructionStatus(
             @RequestBody @Valid ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto) {
         constructionUpdateStatusRequestDto.setConstructionId(constructionUpdateStatusRequestDto.getConstructionId());
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);

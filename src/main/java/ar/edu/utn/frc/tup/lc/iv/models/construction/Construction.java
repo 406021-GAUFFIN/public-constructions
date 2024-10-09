@@ -44,11 +44,6 @@ public class Construction {
     private String lastUpdatedBy;
 
     /**
-     * ID of the owner of the construction project.
-     */
-    private Long ownerId;
-
-    /**
      * ID of the plot where the construction takes place.
      */
     private Long potId;

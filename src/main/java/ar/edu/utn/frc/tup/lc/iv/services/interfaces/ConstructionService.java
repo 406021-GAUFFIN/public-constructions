@@ -33,7 +33,7 @@ public interface ConstructionService {
      * @return Response DTO indicating the status update result.
      * @throws UpdateConstructionStatusException if the update fails.
      */
-    ConstructionUpdateStatusResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
+    ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
 
     List<ConstructionResponseDto> getAllConstructions();
 
@@ -41,6 +41,3 @@ public interface ConstructionService {
 
     List<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
 }
-//
-//Page<FineDTO> getAllFines(Pageable pageable, List<FineState> fineState, List<Long> sanctionTypes, Double price);
-

@@ -28,78 +28,72 @@ public class ConstructionResponseDto {
     /**
      * Unique identifier for the entity.
      */
-    @JsonProperty("construction-id")
+    @JsonProperty("construction_id")
     private Long id;
-
-    /**
-     * ID of the owner of the construction project.
-     */
-    @JsonProperty("owner-id")
-    private Long ownerId;
 
     /**
      * ID of the plot where the construction takes place.
      */
-    @JsonProperty("plot-id")
+    @JsonProperty("plot_id")
     private Long plotId;
 
     /**
      * Planned start date of the construction.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @JsonProperty("planned-start-date")
+    @JsonProperty("planned_start_date")
     private Date plannedStartDate;
 
     /**
      * Actual start date of the construction.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @JsonProperty("actual-start-date")
+    @JsonProperty("actual_start_date")
     private Date actualStartDate;
 
     /**
      * Planned end date of the construction.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @JsonProperty("planned-end-date")
+    @JsonProperty("planned_end_date")
     private Date plannedEndDate;
 
     /**
      * Actual end date of the construction, if applicable.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @JsonProperty("actual-end-date")
+    @JsonProperty("actual_end_date")
     private Date actualEndDate;
 
     /**
      * Description or details about the construction project.
      */
-    @JsonProperty("project-description")
+    @JsonProperty("project_description")
     private String description;
 
     /**
      * Whether the project has been approved by the municipality.
      */
-    @JsonProperty("approved-by-municipality")
+    @JsonProperty("approved_by_municipality")
     private Boolean approvedByMunicipality;
 
     /**
      * Name of the construction project.
      */
-    @JsonProperty("project-name")
+    @JsonProperty("project_name")
     private String projectName;
 
     /**
      * Address of the construction project.
      */
-    @JsonProperty("project-address")
+    @JsonProperty("project_address")
     private String projectAddress;
 
     /**
      * Current status of the construction project
      * (e.g., planned, in progress, completed).
      */
-    @JsonProperty("construction-status")
+    @JsonProperty("construction_status")
     private ConstructionStatus constructionStatus;
 
     /**
@@ -111,7 +105,7 @@ public class ConstructionResponseDto {
     /**
      * List of documentation related to the construction project.
      */
-    @JsonProperty("construction-documentation")
+    @JsonProperty("construction_documentation")
     private List<ConstructionDocumentation> documentation;
 
     /**

@@ -1,15 +1,17 @@
 package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 
+import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
-import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -28,13 +30,25 @@ import java.util.Optional;
  * This class tests the methods responsible for
  * registering constructions and updating their statuses.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+        "cadastre.url = http://localhost:8080",
+        "contacts.url = http://localhost:8081",
+        "accesses.url = http://localhost:8085"
+})
 class ConstructionServiceImplTest {
     @MockBean
     private ConstructionRepository constructionRepository;
 
+    @MockBean
+    private CadastreClient cadastreClient;
+
     @Autowired
     private ConstructionServiceImpl constructionService;
+    @Qualifier("modelMapper")
+    @Autowired
+    private ModelMapper modelMapper;
+
+
 
     /**
      * Tests the successful registration of a construction.
@@ -44,7 +58,6 @@ class ConstructionServiceImplTest {
     void registerConstruction_SuccessCase() {
         // Given
         ConstructionRequestDto constructionRequest = new ConstructionRequestDto();
-        constructionRequest.setOwnerId(1L);
         constructionRequest.setPlotId(1L);
         constructionRequest.setPlannedStartDate(new Date());
         constructionRequest.setPlannedEndDate(new Date());
@@ -54,7 +67,6 @@ class ConstructionServiceImplTest {
 
         ConstructionEntity constructionEntity = new ConstructionEntity();
         constructionEntity.setId(1L);
-        constructionEntity.setOwnerId(1L);
         constructionEntity.setPlotId(1L);
         constructionEntity.setPlannedStartDate(constructionRequest.getPlannedStartDate());
         constructionEntity.setPlannedEndDate(constructionRequest.getPlannedEndDate());
@@ -62,18 +74,24 @@ class ConstructionServiceImplTest {
         constructionEntity.setProjectName(constructionRequest.getProjectName());
         constructionEntity.setProjectAddress(constructionRequest.getProjectAddress());
         constructionEntity.setApprovedByMunicipality(false);
-        constructionEntity.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
+        constructionEntity.setConstructionStatus(ConstructionStatus.PLANNED);
 
         // When
+        when(cadastreClient.plotExists(constructionRequest.getPlotId())).thenReturn(true);
         when(constructionRepository.findByPlotId(constructionRequest.getPlotId())).thenReturn(Optional.empty());
         when(constructionRepository.save(any(ConstructionEntity.class))).thenReturn(constructionEntity);
 
         // Then
-        ConstructionResponseDto response = constructionService.registerConstruction(constructionRequest);
-        assertNotNull(response);
-        assertEquals(constructionRequest.getPlotId(), response.getPlotId());
-        assertEquals("Description", response.getDescription());
-        assertEquals("Project Name", response.getProjectName());
+        ConstructionResponseDto actualResponse = constructionService.registerConstruction(constructionRequest);
+
+        assertNotNull(actualResponse);
+
+        assertEquals(constructionEntity.getProjectName(), actualResponse.getProjectName());
+        assertEquals(constructionEntity.getPlotId(), actualResponse.getPlotId());
+
+        verify(cadastreClient).plotExists(constructionRequest.getPlotId());
+        verify(constructionRepository).findByPlotId(constructionRequest.getPlotId());
+        verify(constructionRepository).save(any(ConstructionEntity.class));
     }
 
     /**
@@ -84,18 +102,23 @@ class ConstructionServiceImplTest {
     public void testUpdateConstructionStatus_Success() {
         Long constructionId = 1L;
         ConstructionEntity existingConstruction = new ConstructionEntity();
-        existingConstruction.setConstructionStatus(ConstructionStatus.PLANNED); // Set an initial status
+        existingConstruction.setConstructionStatus(ConstructionStatus.PLANNED);
+
+        ConstructionEntity updatedConstruction = new ConstructionEntity();
+        updatedConstruction.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
+
 
         ConstructionUpdateStatusRequestDto requestDto = new ConstructionUpdateStatusRequestDto();
         requestDto.setConstructionId(constructionId);
         requestDto.setStatus(ConstructionStatus.IN_PROGRESS);
 
         when(constructionRepository.findById(constructionId)).thenReturn(Optional.of(existingConstruction));
+        when(constructionRepository.save(any(ConstructionEntity.class))).thenReturn(updatedConstruction);
 
-        ConstructionUpdateStatusResponseDto response = constructionService.updateConstructionStatus(requestDto);
+        ConstructionResponseDto response = constructionService.updateConstructionStatus(requestDto);
 
         assertNotNull(response);
-        assertEquals("Construction updated with ID " + constructionId, response.getMessage());
+        assertEquals(ConstructionStatus.IN_PROGRESS, response.getConstructionStatus());
         assertEquals(ConstructionStatus.IN_PROGRESS, existingConstruction.getConstructionStatus());
         verify(constructionRepository).save(existingConstruction); // Verify that save was called
     }
@@ -119,6 +142,7 @@ class ConstructionServiceImplTest {
 
         assertEquals("Construction with ID " + constructionId + " not found.", exception.getMessage());
     }
+
 
 }
 
