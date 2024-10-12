@@ -18,15 +18,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 /**
@@ -131,15 +134,37 @@ public class ConstructionController {
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);
     }
 
+    /**
+     * Retrieves a list of all constructions.
+     *
+     * @return A list of all construction response DTOs.
+     */
+
     @GetMapping("/get")
     public ResponseEntity<List<ConstructionResponseDto>> getAllConstructions() {
         return ResponseEntity.ok(constructionService.getAllConstructions());
     }
 
+    /**
+     * Retrieves a construction by its ID.
+     *
+     * @param id The ID of the construction to retrieve.
+     * @return The response DTO of the retrieved construction.
+     */
+
     @GetMapping("/constructions/{id}")
     public ResponseEntity getConstructionById(@PathVariable Long id) {
         return ResponseEntity.ok(constructionService.getConstructionById(id));
     }
+
+    /**
+     * Retrieves a pageable list of constructions with optional filtering by status.
+     *
+     * @param page The page number to retrieve.
+     * @param size The number of items per page.
+     * @param constructionStatuses Optional list of statuses to filter the constructions.
+     * @return A pageable list of construction request DTOs.
+     */
 
     @GetMapping("construction/pageable")
     public ResponseEntity<Page<ConstructionRequestDto>> getConstructionPageble(
@@ -147,10 +172,9 @@ public class ConstructionController {
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "10") int size,
                 @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
-                )
-    {
+                ) {
         Pageable pageable = PageRequest.of(page, size);
-       return new ResponseEntity<>(constructionService.getAllConstructionsPage(pageable,  constructionStatuses ), HttpStatus.OK) ;
+       return new ResponseEntity<>(constructionService.getAllConstructionsPage(pageable,  constructionStatuses), HttpStatus.OK);
     }
 
 

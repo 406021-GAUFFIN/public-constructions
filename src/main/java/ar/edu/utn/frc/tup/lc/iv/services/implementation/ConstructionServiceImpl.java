@@ -10,18 +10,17 @@ import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.error.PlotNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
+import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionSpecification;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 
 import java.util.List;
@@ -128,6 +127,12 @@ public class ConstructionServiceImpl implements ConstructionService {
 
     }
 
+    /**
+     * Retrieves a list of all constructions.
+     *
+     * @return A list of construction response DTOs.
+     */
+
 
     @Override
     public List<ConstructionResponseDto> getAllConstructions() {
@@ -139,6 +144,13 @@ public class ConstructionServiceImpl implements ConstructionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a construction by its ID.
+     *
+     * @param id The ID of the construction to retrieve.
+     * @return The response DTO of the retrieved construction.
+     */
+
     @Override
     public ConstructionResponseDto getConstructionById(Long id) {
 
@@ -149,11 +161,20 @@ public class ConstructionServiceImpl implements ConstructionService {
         return modelMapper.map(construction, ConstructionResponseDto.class);
     }
 
-    @Override
+    /**
+     * Retrieves a paginated list of constructions filtered by status.
+     *
+     * @param pageable The pagination information.
+     * @param constructionStatus The list of statuses to filter by.
+     * @return A page of construction request DTOs.
+     */
 
+    @Override
     public Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus) {
 
-        Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(pageable);
+        Specification<ConstructionEntity> spec = ConstructionSpecification.hasStatusIn(constructionStatus);
+
+        Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(spec, pageable);
 
         return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionRequestDto.class));
     }

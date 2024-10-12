@@ -33,9 +33,27 @@ public interface ConstructionService {
      */
     ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto constructionUpdateStatusRequestDto);
 
+    /**
+     * Retrieves all constructions.
+     *
+     * @return A list of construction response DTOs.
+     */
     List<ConstructionResponseDto> getAllConstructions();
 
+    /**
+     * Retrieves a construction by its ID.
+     *
+     * @param id The ID of the construction.
+     * @return The response DTO of the construction.
+     */
     ConstructionResponseDto getConstructionById(Long id);
 
+    /**
+     * Retrieves a paginated list of constructions with optional filtering by status.
+     *
+     * @param pageable Pagination information.
+     * @param constructionStatus List of construction statuses to filter by.
+     * @return A pageable list of construction request DTOs.
+     */
     Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
 }

@@ -23,8 +23,23 @@ public interface ConstructionRepository extends JpaRepository<ConstructionEntity
      */
     Optional<ConstructionEntity> findByPlotId(Long plotId);
 
-    Page<ConstructionEntity> findAll (Pageable pageable);
+    /**
+     * Retrieves a paginated list of all construction entities.
+     *
+     * @param pageable The pagination information.
+     * @return A page of construction entities.
+     */
 
-    Page<ConstructionEntity> findAll (Specification<ConstructionEntity> filter, Pageable pageable);
+    Page<ConstructionEntity> findAll(Pageable pageable);
+
+    /**
+     * Retrieves a paginated list of construction entities based on a filter.
+     *
+     * @param filter The specification filter.
+     * @param pageable The pagination information.
+     * @return A page of construction entities that match the filter.
+     */
+
+    Page<ConstructionEntity> findAll(Specification<ConstructionEntity> filter, Pageable pageable);
 
 }
