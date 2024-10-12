@@ -154,10 +154,10 @@ public class ConstructionController {
 
     /**
      * Retrieves a pageable list of constructions with optional filtering by status.
-     *
      * @param page                 The page number to retrieve.
      * @param size                 The number of items per page.
-     * @param constructionStatuses Optional list of statuses to filter the constructions.
+     * @param constructionStatuses Optional list of statuses to filter the
+     *                             constructions.
      * @return A pageable list of construction request DTOs.
      */
     @GetMapping("/pageable")

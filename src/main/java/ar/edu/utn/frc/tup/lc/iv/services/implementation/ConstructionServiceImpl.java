@@ -159,7 +159,7 @@ public class ConstructionServiceImpl implements ConstructionService {
      */
     @Override
     public Page<ConstructionRequestDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus) {
-        Specification<ConstructionEntity> spec = ConstructionSpecification.hasStatusIn(constructionStatus);
+        Specification<ConstructionEntity> spec = ConstructionSpecification.inStatus(constructionStatus);
 
         Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(spec, pageable);
 

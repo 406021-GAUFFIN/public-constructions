@@ -29,6 +29,7 @@ public interface ConstructionRepository extends JpaRepository<ConstructionEntity
      * @param pageable The pagination information.
      * @return A page of construction entities.
      */
+    @Override
     Page<ConstructionEntity> findAll(Pageable pageable);
 
     /**
@@ -38,5 +39,6 @@ public interface ConstructionRepository extends JpaRepository<ConstructionEntity
      * @param pageable The pagination information.
      * @return A page of construction entities that match the filter.
      */
+    @Override
     Page<ConstructionEntity> findAll(Specification<ConstructionEntity> filter, Pageable pageable);
 }
