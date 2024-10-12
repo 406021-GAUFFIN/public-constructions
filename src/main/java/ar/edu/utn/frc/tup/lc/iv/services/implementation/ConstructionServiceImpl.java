@@ -117,7 +117,6 @@ public class ConstructionServiceImpl implements ConstructionService {
         ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
         return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
 
-
-
     }
+
 }

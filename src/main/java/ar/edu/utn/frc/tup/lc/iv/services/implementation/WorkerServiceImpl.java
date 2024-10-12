@@ -25,16 +25,16 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the WorkerService interface.
@@ -298,6 +298,47 @@ public class  WorkerServiceImpl implements WorkerService {
         return accessesClient.allowAccess(request);
 
 
+    }
+
+    /**
+     * Retrieves all workers.
+     *
+     * @return A list of workers response DTOs.
+     */
+    @Override
+    public List<WorkerResponseDto> getAllWorkers() {
+        List<WorkerEntity> workers = workerRepository.findAll();
+
+        return workers.stream()
+                .map(worker -> modelMapper.map(worker, WorkerResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a paginated list of workers.
+     *
+     * @param pageable Pagination information.
+     * @return A pageable list of construction request DTOs.
+     */
+    @Override
+    public Page<WorkerResponseDto> getAllWorkersPage(Pageable pageable) {
+
+        Page<WorkerEntity> workerEntityPage = workerRepository.findAll(pageable);
+
+        return workerEntityPage.map(workerEntity -> modelMapper.map(workerEntity, WorkerResponseDto.class));
+    }
+
+    @Override
+    public List<WorkerResponseDto> getAllWorkersOfConstruction(Long constructionId) {
+        List<WorkerEntity> workers = workerRepository.findByConstructionId(constructionId);
+
+        if (workers.isEmpty()) {
+            throw new RuntimeException("Construction not found with ID: " + constructionId);
+        }
+
+        return workers.stream()
+                .map(worker -> modelMapper.map(worker, WorkerResponseDto.class))
+                .collect(Collectors.toList());
     }
 
 
