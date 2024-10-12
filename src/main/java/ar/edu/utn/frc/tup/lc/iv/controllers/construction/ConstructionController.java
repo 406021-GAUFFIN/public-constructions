@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -141,7 +142,7 @@ public class ConstructionController {
     }
 
     @GetMapping("construction/pageable")
-    public ResponseEntity<List<ConstructionRequestDto>> getConstructionPageble(
+    public ResponseEntity<Page<ConstructionRequestDto>> getConstructionPageble(
 
                 @RequestParam(defaultValue = "0") int page,
                 @RequestParam(defaultValue = "10") int size,
@@ -151,20 +152,6 @@ public class ConstructionController {
         Pageable pageable = PageRequest.of(page, size);
        return new ResponseEntity<>(constructionService.getAllConstructionsPage(pageable,  constructionStatuses ), HttpStatus.OK) ;
     }
-
-
-//    @GetMapping("pageable/fine")
-//    public ResponseEntity<Page<FineDTO>> getFines(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(required = false) List<FineState> fineState,
-//            @RequestParam(required = false) List< Long> sanctionTypes,
-//            @RequestParam(required = false) Double price
-//
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return new ResponseEntity<>(fineService.getAllFines(pageable, fineState, sanctionTypes,price ), HttpStatus.OK) ;
-//    }
 
 
 }

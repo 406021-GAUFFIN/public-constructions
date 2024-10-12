@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,7 +28,3 @@ public interface ConstructionRepository extends JpaRepository<ConstructionEntity
     Page<ConstructionEntity> findAll (Specification<ConstructionEntity> filter, Pageable pageable);
 
 }
-
-//Page<FineEntity> findAll (Pageable pageable);
-//Page<FineEntity> findAll (Specification<FineEntity> filter,Pageable pageable);
-//List<FineEntity> findAll (Specification<FineEntity> filter);

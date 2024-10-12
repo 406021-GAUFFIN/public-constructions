@@ -150,15 +150,14 @@ public class ConstructionServiceImpl implements ConstructionService {
     }
 
     @Override
-    public List<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus) {
 
+    public Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus) {
 
         Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(pageable);
 
-        return constructionEntityPage.stream()
-                .map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionRequestDto.class))
-                .toList();
+        return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionRequestDto.class));
     }
+
 
 }
 

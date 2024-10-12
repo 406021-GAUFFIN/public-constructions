@@ -37,5 +37,5 @@ public interface ConstructionService {
 
     ConstructionResponseDto getConstructionById(Long id);
 
-    List<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
+    Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
 }
