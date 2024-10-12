@@ -31,7 +31,6 @@ class ConstructionControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
     @Test
     void createConstruction_succes() {
 //        //given
@@ -51,7 +50,6 @@ class ConstructionControllerTest {
 //        assertEquals(200, response.getStatusCodeValue());
 //        assertEquals(responseDto, response.getBody());
 //        verify(constructionService, times(1)).registerConstruction(requestDto);
-
     }
 
     @Test
