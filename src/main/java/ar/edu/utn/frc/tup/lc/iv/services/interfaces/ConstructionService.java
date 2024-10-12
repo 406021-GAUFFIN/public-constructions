@@ -55,5 +55,5 @@ public interface ConstructionService {
      * @param constructionStatus List of construction statuses to filter by.
      * @return A pageable list of construction request DTOs.
      */
-    Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus);
+    Page<ConstructionRequestDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus);
 }

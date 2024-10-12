@@ -28,9 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 import java.util.List;
-
 
 /**
  * Controller for managing construction operations.
@@ -38,7 +36,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
-    @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
@@ -84,7 +82,6 @@ public class ConstructionController {
     public ResponseEntity<ConstructionResponseDto> createConstruction(@RequestBody ConstructionRequestDto constructionRequestDto) {
         return ResponseEntity.ok(constructionService.registerConstruction(constructionRequestDto));
     }
-
 
     /**
      * Update the status of a construction.
@@ -139,8 +136,7 @@ public class ConstructionController {
      *
      * @return A list of all construction response DTOs.
      */
-
-    @GetMapping("/get")
+    @GetMapping
     public ResponseEntity<List<ConstructionResponseDto>> getAllConstructions() {
         return ResponseEntity.ok(constructionService.getAllConstructions());
     }
@@ -151,31 +147,26 @@ public class ConstructionController {
      * @param id The ID of the construction to retrieve.
      * @return The response DTO of the retrieved construction.
      */
-
-    @GetMapping("/constructions/{id}")
-    public ResponseEntity getConstructionById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ConstructionResponseDto> getConstructionById(@PathVariable Long id) {
         return ResponseEntity.ok(constructionService.getConstructionById(id));
     }
 
     /**
      * Retrieves a pageable list of constructions with optional filtering by status.
      *
-     * @param page The page number to retrieve.
-     * @param size The number of items per page.
+     * @param page                 The page number to retrieve.
+     * @param size                 The number of items per page.
      * @param constructionStatuses Optional list of statuses to filter the constructions.
      * @return A pageable list of construction request DTOs.
      */
-
-    @GetMapping("construction/pageable")
-    public ResponseEntity<Page<ConstructionRequestDto>> getConstructionPageble(
-
-                @RequestParam(defaultValue = "0") int page,
-                @RequestParam(defaultValue = "10") int size,
-                @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
-                ) {
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<ConstructionRequestDto>> getAllConstructionsPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
+    ) {
         Pageable pageable = PageRequest.of(page, size);
-       return new ResponseEntity<>(constructionService.getAllConstructionsPage(pageable,  constructionStatuses), HttpStatus.OK);
+        return new ResponseEntity<>(constructionService.getAllConstructionsPageable(pageable, constructionStatuses), HttpStatus.OK);
     }
-
-
 }

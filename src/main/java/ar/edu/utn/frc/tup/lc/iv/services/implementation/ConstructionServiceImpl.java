@@ -22,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,8 +105,6 @@ public class ConstructionServiceImpl implements ConstructionService {
     @Override
     @Transactional
     public ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
-
-
         ConstructionEntity constructionEntity = constructionRepository.findById(updateStatusRequestDto.getConstructionId())
                 .orElseThrow(() -> new ConstructionNotFoundException(
                         "Construction with ID " + updateStatusRequestDto.getConstructionId() + " not found.")
@@ -122,9 +119,6 @@ public class ConstructionServiceImpl implements ConstructionService {
 
         ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
         return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
-
-
-
     }
 
     /**
@@ -132,12 +126,9 @@ public class ConstructionServiceImpl implements ConstructionService {
      *
      * @return A list of construction response DTOs.
      */
-
-
     @Override
     public List<ConstructionResponseDto> getAllConstructions() {
         List<ConstructionEntity> constructions = constructionRepository.findAll();
-
 
         return constructions.stream()
                 .map(construction -> modelMapper.map(construction, ConstructionResponseDto.class))
@@ -150,10 +141,8 @@ public class ConstructionServiceImpl implements ConstructionService {
      * @param id The ID of the construction to retrieve.
      * @return The response DTO of the retrieved construction.
      */
-
     @Override
     public ConstructionResponseDto getConstructionById(Long id) {
-
         ConstructionEntity construction = constructionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Construction not found with ID: " + id));
 
@@ -164,22 +153,18 @@ public class ConstructionServiceImpl implements ConstructionService {
     /**
      * Retrieves a paginated list of constructions filtered by status.
      *
-     * @param pageable The pagination information.
+     * @param pageable           The pagination information.
      * @param constructionStatus The list of statuses to filter by.
      * @return A page of construction request DTOs.
      */
-
     @Override
-    public Page<ConstructionRequestDto> getAllConstructionsPage(Pageable pageable, List<ConstructionStatus> constructionStatus) {
-
+    public Page<ConstructionRequestDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus) {
         Specification<ConstructionEntity> spec = ConstructionSpecification.hasStatusIn(constructionStatus);
 
         Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(spec, pageable);
 
         return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionRequestDto.class));
     }
-
-
 }
 
 

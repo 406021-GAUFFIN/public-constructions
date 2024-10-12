@@ -14,7 +14,6 @@ import java.util.List;
  * interface to dynamically build queries. Currently, it provides a method to filter
  * construction projects by their status.</p>
  */
-
 public class ConstructionSpecification {
 
     /**
@@ -31,7 +30,6 @@ public class ConstructionSpecification {
      * @return a {@link Specification} for filtering construction entities
      *         based on their status.
      */
-
     public static Specification<ConstructionEntity> hasStatusIn(List<ConstructionStatus> statuses) {
         return (root, query, criteriaBuilder) -> {
             if (statuses == null || statuses.isEmpty()) {
