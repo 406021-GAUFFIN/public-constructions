@@ -158,12 +158,12 @@ public class ConstructionServiceImpl implements ConstructionService {
      * @return A page of construction request DTOs.
      */
     @Override
-    public Page<ConstructionRequestDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus) {
+    public Page<ConstructionResponseDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus) {
         Specification<ConstructionEntity> spec = ConstructionSpecification.inStatus(constructionStatus);
 
         Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(spec, pageable);
 
-        return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionRequestDto.class));
+        return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionResponseDto.class));
     }
 }
 
