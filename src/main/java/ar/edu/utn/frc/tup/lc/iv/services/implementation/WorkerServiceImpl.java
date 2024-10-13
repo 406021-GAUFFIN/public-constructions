@@ -358,4 +358,60 @@ public class  WorkerServiceImpl implements WorkerService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Unassigns a worker from a construction project.
+     *
+     * This method removes the construction assignment from the worker
+     * by setting the worker's construction field to null.
+     *
+     * @param workerId the ID of the worker to unassign.
+     */
+    @Override
+    public void unassignWorkerFromConstruction(Long workerId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        if (worker.getConstruction() != null) {
+            worker.setConstruction(null);
+            workerRepository.save(worker);
+        } else {
+            throw new EntityNotFoundException("Worker is not assigned to any construction");
+        }
+    }
+
+    /**
+     * Assigns a worker to a construction project.
+     *
+     * This method assigns a worker to a construction by setting the worker's
+     * construction field to the given construction.
+     *
+     * @param workerId the ID of the worker to assign.
+     * @param constructionId the ID of the construction project.
+     */
+    @Override
+    public void assignWorkerToConstruction(Long workerId, Long constructionId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        ConstructionEntity construction = constructionRepository.findById(constructionId)
+                .orElseThrow(() -> new EntityNotFoundException("Construction not found"));
+
+        worker.setConstruction(construction);
+        workerRepository.save(worker);
+    }
+
+    /**
+     * Deletes a worker from the system.
+     *
+     * This method deletes the worker from the database based on the provided worker ID.
+     *
+     * @param workerId the ID of the worker to delete.
+     */
+    @Override
+    public void deleteWorker(Long workerId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        workerRepository.delete(worker);
+    }
 }

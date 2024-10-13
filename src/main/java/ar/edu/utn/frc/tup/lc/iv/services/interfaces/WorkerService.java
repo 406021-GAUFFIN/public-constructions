@@ -63,4 +63,26 @@ public interface WorkerService {
      * @return a list of worker response DTOs for the specified construction
      */
     List<WorkerResponseDto> getAllWorkersOfConstruction(Long constructionId);
+
+    /**
+     * Unassigns a worker from a construction.
+     *
+     * @param workerId the ID of the worker to unassign.
+     */
+    void unassignWorkerFromConstruction(Long workerId);
+
+    /**
+     * Assigns a worker to a construction.
+     *
+     * @param workerId the ID of the worker.
+     * @param constructionId the ID of the construction.
+     */
+    void assignWorkerToConstruction(Long workerId, Long constructionId);
+
+    /**
+     * Deletes a worker from the system.
+     *
+     * @param workerId the ID of the worker to delete.
+     */
+    void deleteWorker(Long workerId);
 }

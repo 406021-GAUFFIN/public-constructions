@@ -18,14 +18,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -206,5 +208,43 @@ public class WorkerController {
     @GetMapping("/get/workers/construction/{id}")
     public ResponseEntity<List<WorkerResponseDto>> getWorkerConstruction(@PathVariable Long id) {
         return ResponseEntity.ok((workerService.getAllWorkersOfConstruction(id)));
+    }
+
+    /**
+     * Endpoint to unassign a worker from a construction.
+     *
+     * @param workerId the ID of the worker to unassign.
+     * @return Response entity with a success message.
+     */
+    @PutMapping("/{workerId}/unassign")
+    public ResponseEntity<String> unassignWorkerFromConstruction(@PathVariable Long workerId) {
+        workerService.unassignWorkerFromConstruction(workerId);
+        return ResponseEntity.ok("Worker unassigned from construction successfully");
+    }
+
+    /**
+     * Endpoint to assign a worker to a construction.
+     *
+     * @param workerId the ID of the worker.
+     * @param constructionId the ID of the construction.
+     * @return Response entity with a success message.
+     */
+    @PutMapping("/{workerId}/assign/{constructionId}")
+    public ResponseEntity<String> assignWorkerToConstruction(@PathVariable Long workerId,
+                                                             @PathVariable Long constructionId) {
+        workerService.assignWorkerToConstruction(workerId, constructionId);
+        return ResponseEntity.ok("Worker assigned to construction successfully");
+    }
+
+    /**
+     * Endpoint to delete a worker from the system.
+     *
+     * @param workerId the ID of the worker to delete.
+     * @return Response entity with a success message.
+     */
+    @DeleteMapping("/{workerId}")
+    public ResponseEntity<String> deleteWorker(@PathVariable Long workerId) {
+        workerService.deleteWorker(workerId);
+        return ResponseEntity.ok("Worker deleted successfully");
     }
 }

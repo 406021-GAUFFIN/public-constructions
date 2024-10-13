@@ -58,7 +58,6 @@ VALUES(4, 'Av.Colon 10500', 'Mario Alberto', 'Kempes', 20224059876, NULL, 806, 1
 INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
 VALUES(3, 'Miami', 'Leonel Andres', 'Messi', 20334568976, NULL, 804, 1001, FALSE);
 
-
 -- Insert data into NOTES
 INSERT INTO note (description, user_id, construction_id)
 VALUES ('Initial meeting with the client.', 1, 1001);
