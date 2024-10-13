@@ -50,10 +50,10 @@ public interface WorkerRepository extends JpaRepository<WorkerEntity, Long>, Jpa
     Page<WorkerEntity> findAll(Pageable pageable);
 
     /**
-     * Finds a construction entity by its plot ID.
+     * Finds a workers entity by its plot ID.
      *
      * @param constructionId The ID of the plot.
-     * @return An optional containing
+     * @return a list of workers asigned to construction.
      * the found construction entity, or empty if not found.
      */
     List<WorkerEntity> findByConstructionId(Long constructionId);

@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
@@ -187,9 +186,8 @@ public class WorkerController {
      *
      * @param page The page number to retrieve.
      * @param size The number of items per page.
-     * @return A pageable list of worker request DTOs.
+     * @return A pageable list of worker WorkerResponseDTOs.
      */
-
     @GetMapping("/get/paged")
     public ResponseEntity<Page<WorkerResponseDto>> getAllWorkersPageable(
             @RequestParam(defaultValue = "0") int page,

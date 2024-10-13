@@ -33,7 +33,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -88,9 +91,9 @@ public class  WorkerServiceImpl implements WorkerService {
      */
     private static final int WORK_END_HOUR = 18;
 
-
     /**
      * Creates a new worker and saves it to the database.
+     *
      * @param workerRequestDto the worker data
      * @return the created worker's response DTO
      */
@@ -123,7 +126,6 @@ public class  WorkerServiceImpl implements WorkerService {
         WorkerResponseDto response = modelMapper.map(workerSaved, WorkerResponseDto.class);
         response.setContact(modelMapper.map(contactResponseDto, ContactRequestDto.class));
         return response;
-
 
 
     }
@@ -167,6 +169,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Validates the existence of a worker by CUIL or Document.
+     *
      * @param workerRequestDto the worker request data
      */
     private void validateUserExistence(WorkerRequestDto workerRequestDto) {
@@ -188,8 +191,10 @@ public class  WorkerServiceImpl implements WorkerService {
             validateDocumentContainsCuil(workerRequestDto.getCuil());
         }
     }
+
     /**
      * Ensures that either CUIL or Document is provided.
+     *
      * @param workerRequestDto the worker request data
      */
     private void checkCuilAndDocumentNotNull(WorkerRequestDto workerRequestDto) {
@@ -197,8 +202,10 @@ public class  WorkerServiceImpl implements WorkerService {
             throw new IllegalArgumentException("Either CUIL or Document Number must be provided.");
         }
     }
+
     /**
      * Validates if a worker with the given CUIL exists.
+     *
      * @param cuil the CUIL to check
      */
     private void validateExistingCuil(String cuil) {
@@ -210,6 +217,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Validates if a worker with the given Document exists.
+     *
      * @param document the document to check
      */
     private void validateExistingDocument(String document) {
@@ -221,6 +229,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Checks if any CUIL contains the given document.
+     *
      * @param document the document to check
      */
     private void validateCuilContainsDocument(String document) {
@@ -232,6 +241,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Checks if any document is contained within the given CUIL.
+     *
      * @param cuil the CUIL to check
      */
     private void validateDocumentContainsCuil(String cuil) {
@@ -241,6 +251,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Creates a contact using the contact client.
+     *
      * @param contactRequestDto the contact request data
      * @return the created contact's response DTO
      */
@@ -250,10 +261,11 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Allows access for a worker by creating an authorization request.
+     *
      * @param workerId ID of the worker requesting access.
-     * @param comment Comment associated with the authorization request.
+     * @param comment  Comment associated with the authorization request.
      * @return AuthorizationRangeResponseDto containing the client response.
-     * @throws EntityNotFoundException if the worker is not found.
+     * @throws EntityNotFoundException     if the worker is not found.
      * @throws WorkerNotAvailableException if the worker is not available to work.
      */
     @Override
@@ -318,7 +330,7 @@ public class  WorkerServiceImpl implements WorkerService {
      * Retrieves a paginated list of workers.
      *
      * @param pageable Pagination information.
-     * @return A pageable list of construction request DTOs.
+     * @return A pageable list of worker reqponse DTOs.
      */
     @Override
     public Page<WorkerResponseDto> getAllWorkersPage(Pageable pageable) {
@@ -328,6 +340,11 @@ public class  WorkerServiceImpl implements WorkerService {
         return workerEntityPage.map(workerEntity -> modelMapper.map(workerEntity, WorkerResponseDto.class));
     }
 
+    /**
+     * Retrieves all workers of contruction.
+     *
+     * @return A list of workers response DTOs.
+     */
     @Override
     public List<WorkerResponseDto> getAllWorkersOfConstruction(Long constructionId) {
         List<WorkerEntity> workers = workerRepository.findByConstructionId(constructionId);
@@ -340,6 +357,5 @@ public class  WorkerServiceImpl implements WorkerService {
                 .map(worker -> modelMapper.map(worker, WorkerResponseDto.class))
                 .collect(Collectors.toList());
     }
-
 
 }

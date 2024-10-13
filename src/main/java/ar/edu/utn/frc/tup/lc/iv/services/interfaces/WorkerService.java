@@ -43,25 +43,25 @@ public interface WorkerService {
     AuthorizationRangeResponseDto allowWorkerAccess(Long workerId, String comment);
 
     /**
-     * Retrieves all workers.
+     * Retrieves all workers without pagination.
      *
-     * @return A list of workers response DTOs.
+     * @return a list of response DTOs for all workers
      */
     List<WorkerResponseDto> getAllWorkers();
 
     /**
      * Retrieves a paginated list of workers.
      *
-     * @param pageable Pagination information.
-     * @return A pageable list of construction request DTOs.
+     * @param pageable the pagination information
+     * @return a page of worker response DTOs
      */
     Page<WorkerResponseDto> getAllWorkersPage(Pageable pageable);
 
     /**
-     * Retrieves a paginated list of workers.
+     * Retrieves a list of all workers associated with a specific construction project.
      *
-     * @param contructionId Pagination information.
-     * @return A list of workers request DTOs.
+     * @param constructionId the unique identifier of the construction project
+     * @return a list of worker response DTOs for the specified construction
      */
     List<WorkerResponseDto> getAllWorkersOfConstruction(Long constructionId);
 }
