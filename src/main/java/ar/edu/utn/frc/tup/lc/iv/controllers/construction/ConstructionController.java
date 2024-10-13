@@ -4,6 +4,7 @@ import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
+import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,14 +13,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 
 /**
  * Controller for managing construction operations.
@@ -27,7 +36,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/constructions")
-    @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class ConstructionController {
 
     /**
@@ -73,7 +82,6 @@ public class ConstructionController {
     public ResponseEntity<ConstructionResponseDto> createConstruction(@RequestBody ConstructionRequestDto constructionRequestDto) {
         return ResponseEntity.ok(constructionService.registerConstruction(constructionRequestDto));
     }
-
 
     /**
      * Update the status of a construction.
@@ -123,4 +131,42 @@ public class ConstructionController {
         return constructionService.updateConstructionStatus(constructionUpdateStatusRequestDto);
     }
 
+    /**
+     * Retrieves a list of all constructions.
+     *
+     * @return A list of all construction response DTOs.
+     */
+    @GetMapping
+    public ResponseEntity<List<ConstructionResponseDto>> getAllConstructions() {
+        return ResponseEntity.ok(constructionService.getAllConstructions());
+    }
+
+    /**
+     * Retrieves a construction by its ID.
+     *
+     * @param id The ID of the construction to retrieve.
+     * @return The response DTO of the retrieved construction.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ConstructionResponseDto> getConstructionById(@PathVariable Long id) {
+        return ResponseEntity.ok(constructionService.getConstructionById(id));
+    }
+
+    /**
+     * Retrieves a pageable list of constructions with optional filtering by status.
+     * @param page                 The page number to retrieve.
+     * @param size                 The number of items per page.
+     * @param constructionStatuses Optional list of statuses to filter the
+     *                             constructions.
+     * @return A pageable list of construction request DTOs.
+     */
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<ConstructionResponseDto>> getAllConstructionsPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(constructionService.getAllConstructionsPageable(pageable, constructionStatuses), HttpStatus.OK);
+    }
 }
