@@ -261,7 +261,6 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Allows access for a worker by creating an authorization request.
-     *
      * @param workerId ID of the worker requesting access.
      * @param comment  Comment associated with the authorization request.
      * @return AuthorizationRangeResponseDto containing the client response.
@@ -360,7 +359,6 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Unassigns a worker from a construction project.
-     *
      * This method removes the construction assignment from the worker
      * by setting the worker's construction field to null.
      *
@@ -381,10 +379,6 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Assigns a worker to a construction project.
-     *
-     * This method assigns a worker to a construction by setting the worker's
-     * construction field to the given construction.
-     *
      * @param workerId the ID of the worker to assign.
      * @param constructionId the ID of the construction project.
      */
@@ -402,9 +396,6 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Deletes a worker from the system.
-     *
-     * This method deletes the worker from the database based on the provided worker ID.
-     *
      * @param workerId the ID of the worker to delete.
      */
     @Override

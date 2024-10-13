@@ -58,7 +58,7 @@ public interface WorkerService {
     Page<WorkerResponseDto> getAllWorkersPage(Pageable pageable);
 
     /**
-     * Retrieves a list of all workers associated with a specific construction project.
+     * Get all workers of construction.
      * @param constructionId the unique identifier of the construction project
      * @return a list of worker response DTOs for the specified construction
      */
