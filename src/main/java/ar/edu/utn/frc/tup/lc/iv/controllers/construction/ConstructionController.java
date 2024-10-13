@@ -161,7 +161,7 @@ public class ConstructionController {
      * @return A pageable list of construction request DTOs.
      */
     @GetMapping("/pageable")
-    public ResponseEntity<Page<ConstructionRequestDto>> getAllConstructionsPageable(
+    public ResponseEntity<Page<ConstructionResponseDto>> getAllConstructionsPageable(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) List<ConstructionStatus> constructionStatuses
