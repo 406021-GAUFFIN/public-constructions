@@ -46,7 +46,7 @@ public interface WorkerRepository extends JpaRepository<WorkerEntity, Long>, Jpa
      * @param pageable The pagination information.
      * @return A page of worker entities.
      */
-
+    @Override
     Page<WorkerEntity> findAll(Pageable pageable);
 
     /**

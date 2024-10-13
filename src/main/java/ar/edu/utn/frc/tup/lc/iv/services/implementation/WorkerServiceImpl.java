@@ -350,7 +350,7 @@ public class  WorkerServiceImpl implements WorkerService {
         List<WorkerEntity> workers = workerRepository.findByConstructionId(constructionId);
 
         if (workers.isEmpty()) {
-            throw new RuntimeException("Construction not found with ID: " + constructionId);
+            throw new EntityNotFoundException("Construction not found with ID: " + constructionId);
         }
 
         return workers.stream()
