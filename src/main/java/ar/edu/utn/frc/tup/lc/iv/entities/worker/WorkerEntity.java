@@ -75,7 +75,7 @@ public class WorkerEntity extends BaseEntity {
      * Type of speciality of the worker.
      */
     @OneToOne
-    @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id")
+    @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id",  nullable = true)
     private WorkerSpecialityEntity workerSpecialityType;
 
     /**
