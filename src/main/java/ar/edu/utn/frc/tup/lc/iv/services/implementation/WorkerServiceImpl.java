@@ -25,6 +25,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the WorkerService interface.
@@ -88,9 +91,9 @@ public class  WorkerServiceImpl implements WorkerService {
      */
     private static final int WORK_END_HOUR = 18;
 
-
     /**
      * Creates a new worker and saves it to the database.
+     *
      * @param workerRequestDto the worker data
      * @return the created worker's response DTO
      */
@@ -123,7 +126,6 @@ public class  WorkerServiceImpl implements WorkerService {
         WorkerResponseDto response = modelMapper.map(workerSaved, WorkerResponseDto.class);
         response.setContact(modelMapper.map(contactResponseDto, ContactRequestDto.class));
         return response;
-
 
 
     }
@@ -167,6 +169,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Validates the existence of a worker by CUIL or Document.
+     *
      * @param workerRequestDto the worker request data
      */
     private void validateUserExistence(WorkerRequestDto workerRequestDto) {
@@ -188,8 +191,10 @@ public class  WorkerServiceImpl implements WorkerService {
             validateDocumentContainsCuil(workerRequestDto.getCuil());
         }
     }
+
     /**
      * Ensures that either CUIL or Document is provided.
+     *
      * @param workerRequestDto the worker request data
      */
     private void checkCuilAndDocumentNotNull(WorkerRequestDto workerRequestDto) {
@@ -197,8 +202,10 @@ public class  WorkerServiceImpl implements WorkerService {
             throw new IllegalArgumentException("Either CUIL or Document Number must be provided.");
         }
     }
+
     /**
      * Validates if a worker with the given CUIL exists.
+     *
      * @param cuil the CUIL to check
      */
     private void validateExistingCuil(String cuil) {
@@ -210,6 +217,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Validates if a worker with the given Document exists.
+     *
      * @param document the document to check
      */
     private void validateExistingDocument(String document) {
@@ -221,6 +229,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Checks if any CUIL contains the given document.
+     *
      * @param document the document to check
      */
     private void validateCuilContainsDocument(String document) {
@@ -232,6 +241,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Checks if any document is contained within the given CUIL.
+     *
      * @param cuil the CUIL to check
      */
     private void validateDocumentContainsCuil(String cuil) {
@@ -241,6 +251,7 @@ public class  WorkerServiceImpl implements WorkerService {
 
     /**
      * Creates a contact using the contact client.
+     *
      * @param contactRequestDto the contact request data
      * @return the created contact's response DTO
      */
@@ -251,9 +262,9 @@ public class  WorkerServiceImpl implements WorkerService {
     /**
      * Allows access for a worker by creating an authorization request.
      * @param workerId ID of the worker requesting access.
-     * @param comment Comment associated with the authorization request.
+     * @param comment  Comment associated with the authorization request.
      * @return AuthorizationRangeResponseDto containing the client response.
-     * @throws EntityNotFoundException if the worker is not found.
+     * @throws EntityNotFoundException     if the worker is not found.
      * @throws WorkerNotAvailableException if the worker is not available to work.
      */
     @Override
@@ -300,5 +311,98 @@ public class  WorkerServiceImpl implements WorkerService {
 
     }
 
+    /**
+     * Retrieves all workers.
+     *
+     * @return A list of workers response DTOs.
+     */
+    @Override
+    public List<WorkerResponseDto> getAllWorkers() {
+        List<WorkerEntity> workers = workerRepository.findAll();
 
+        return workers.stream()
+                .map(worker -> modelMapper.map(worker, WorkerResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a paginated list of workers.
+     *
+     * @param pageable Pagination information.
+     * @return A pageable list of worker reqponse DTOs.
+     */
+    @Override
+    public Page<WorkerResponseDto> getAllWorkersPage(Pageable pageable) {
+
+        Page<WorkerEntity> workerEntityPage = workerRepository.findAll(pageable);
+
+        return workerEntityPage.map(workerEntity -> modelMapper.map(workerEntity, WorkerResponseDto.class));
+    }
+
+    /**
+     * Retrieves all workers of contruction.
+     *
+     * @return A list of workers response DTOs.
+     */
+    @Override
+    public List<WorkerResponseDto> getAllWorkersOfConstruction(Long constructionId) {
+        List<WorkerEntity> workers = workerRepository.findByConstructionId(constructionId);
+
+        if (workers.isEmpty()) {
+            throw new EntityNotFoundException("Construction not found with ID: " + constructionId);
+        }
+
+        return workers.stream()
+                .map(worker -> modelMapper.map(worker, WorkerResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Unassigns a worker from a construction project.
+     * This method removes the construction assignment from the worker
+     * by setting the worker's construction field to null.
+     *
+     * @param workerId the ID of the worker to unassign.
+     */
+    @Override
+    public void unassignWorkerFromConstruction(Long workerId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        if (worker.getConstruction() != null) {
+            worker.setConstruction(null);
+            workerRepository.save(worker);
+        } else {
+            throw new EntityNotFoundException("Worker is not assigned to any construction");
+        }
+    }
+
+    /**
+     * Assigns a worker to a construction project.
+     * @param workerId the ID of the worker to assign.
+     * @param constructionId the ID of the construction project.
+     */
+    @Override
+    public void assignWorkerToConstruction(Long workerId, Long constructionId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        ConstructionEntity construction = constructionRepository.findById(constructionId)
+                .orElseThrow(() -> new EntityNotFoundException("Construction not found"));
+
+        worker.setConstruction(construction);
+        workerRepository.save(worker);
+    }
+
+    /**
+     * Deletes a worker from the system.
+     * @param workerId the ID of the worker to delete.
+     */
+    @Override
+    public void deleteWorker(Long workerId) {
+        WorkerEntity worker = workerRepository.findById(workerId)
+                .orElseThrow(() -> new EntityNotFoundException("Worker not found"));
+
+        workerRepository.delete(worker);
+    }
 }

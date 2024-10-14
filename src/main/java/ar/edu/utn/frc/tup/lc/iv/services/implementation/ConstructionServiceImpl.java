@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -105,6 +106,8 @@ public class ConstructionServiceImpl implements ConstructionService {
     @Override
     @Transactional
     public ConstructionResponseDto updateConstructionStatus(ConstructionUpdateStatusRequestDto updateStatusRequestDto) {
+
+
         ConstructionEntity constructionEntity = constructionRepository.findById(updateStatusRequestDto.getConstructionId())
                 .orElseThrow(() -> new ConstructionNotFoundException(
                         "Construction with ID " + updateStatusRequestDto.getConstructionId() + " not found.")
@@ -119,6 +122,7 @@ public class ConstructionServiceImpl implements ConstructionService {
 
         ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
         return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
+
     }
 
     /**
@@ -166,6 +170,3 @@ public class ConstructionServiceImpl implements ConstructionService {
         return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionResponseDto.class));
     }
 }
-
-
-
