@@ -214,12 +214,12 @@ public class WorkerController {
      * Endpoint to unassign a worker from a construction.
      *
      * @param workerId the ID of the worker to unassign.
-     * @return Response entity with a success message.
+     * @return Response entity .
      */
     @PutMapping("/{workerId}/unassign")
-    public ResponseEntity<String> unassignWorkerFromConstruction(@PathVariable Long workerId) {
+    public ResponseEntity<Void> unassignWorkerFromConstruction(@PathVariable Long workerId) {
         workerService.unassignWorkerFromConstruction(workerId);
-        return ResponseEntity.ok("Worker unassigned from construction successfully");
+        return ResponseEntity.noContent().build();
     }
 
     /**
