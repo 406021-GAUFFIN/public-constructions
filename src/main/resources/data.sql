@@ -41,41 +41,82 @@ INSERT INTO CONSTRUCTION (ID, PLOT_ID, PLANNED_START_DATE, ACTUAL_START_DATE, PL
 VALUES (1002, 103, '2023-05-10', '2023-05-15', '2023-11-30', '2023-12-05', 'Ampliación de local comercial.', TRUE,
         'Local Comercial García', 'Calle del Sol 789', 'COMPLETED');
 
+
+-- Insert data into CONSTRUCTION
 INSERT INTO CONSTRUCTION (ID, PLOT_ID, PLANNED_START_DATE, ACTUAL_START_DATE, PLANNED_END_DATE, ACTUAL_END_DATE,
                           DESCRIPTION, APPROVED_BY_MUNICIPALITY, PROJECT_NAME, PROJECT_ADDRESS, CONSTRUCTION_STATUS)
 VALUES (808, 1, '2024-10-01', NULL, '2025-10-01', NULL, 'New office building', TRUE, 'Office Building A',
         '123 Main St, City', 'PLANNED');
 
--- Insert data into WORKER
-INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
-VALUES(1, 'Siempre Viva 123', 'Homero', 'Simpson', 20324345676, NULL, 800, 808, TRUE);
-INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
-VALUES(2, 'Estadio Libertadores de America', 'Ricardo Enrique', 'Bochini', 20777777776, NULL, 805, 808, TRUE);
-INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
-VALUES(3, 'Esquina Libertad', 'Ciro', 'Martinez', 203152045276, NULL, 807, 1000, FALSE);
-INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
-VALUES(4, 'Av.Colon 10500', 'Mario Alberto', 'Kempes', 20224059876, NULL, 806, 1001, TRUE);
-INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, SPECIALITY_TYPE, CONSTRUCTION_ID, AVAIBLE_TO_WORK)
-VALUES(3, 'Miami', 'Leonel Andres', 'Messi', 20334568976, NULL, 804, 1001, FALSE);
+INSERT INTO DOCUMENTATION_CONSTRUCTION (ID, APPROVED, DOCUMENT_PATH, DOCUMENTATION_TYPE_ID, CONSTRUCTION_ID)
+VALUES (501, TRUE, '/documents/architectural_plan.pdf', 100, 808);
+INSERT INTO DOCUMENTATION_CONSTRUCTION (ID, APPROVED, DOCUMENT_PATH, DOCUMENTATION_TYPE_ID, CONSTRUCTION_ID)
+VALUES (502, FALSE, '/documents/insurance_info.pdf', 101, 808);
+INSERT INTO DOCUMENTATION_CONSTRUCTION (ID, APPROVED, DOCUMENT_PATH, DOCUMENTATION_TYPE_ID, CONSTRUCTION_ID)
+VALUES (503, TRUE, '/documents/blueprint.pdf', 100, 808);
+INSERT INTO DOCUMENTATION_CONSTRUCTION (ID, APPROVED, DOCUMENT_PATH, DOCUMENTATION_TYPE_ID, CONSTRUCTION_ID)
+VALUES (504, FALSE, '/documents/insurance_update.pdf', 101, 808);
+INSERT INTO DOCUMENTATION_CONSTRUCTION (ID, APPROVED, DOCUMENT_PATH, DOCUMENTATION_TYPE_ID, CONSTRUCTION_ID)
+VALUES (505, TRUE, '/documents/site_survey.pdf', 100, 808);
 
--- Insert data into NOTES
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Initial meeting with the client.', 1, 1001);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Reviewed site plans and submitted adjustments.', 2, 1001);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Site inspection completed. No issues found.', 3, 1002);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Budget approved by finance.', 4, 1002);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Safety inspection passed.', 5, 1000);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Materials delivered to site.', 1, 1000);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Started excavation work.', 2, 808);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Electrical system design finalized.', 3, 808);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Plumbing installation in progress.', 4, 808);
-INSERT INTO note (description, user_id, construction_id)
-VALUES ('Roof framework completed.', 5, 808);
+INSERT INTO WORKER (ID, CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (501, 1001, '123 Calle Falsa', 'Juan', 'Pérez', '20-12345678-9', 'DNI12345678', 800, 808, TRUE);
+INSERT INTO WORKER (ID, CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (502, 1002, '456 Calle Verdadera', 'Carlos', 'García', '20-87654321-4', 'DNI87654321', 801, 808, TRUE);
+INSERT INTO WORKER (ID, CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (503, 1003, '789 Calle Real', 'María', 'López', '27-23456789-0', 'DNI23456789', 802, 808, FALSE);
+INSERT INTO WORKER (ID, CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (504, 1004, '321 Avenida Siempre Viva', 'Ana', 'Rodríguez', '23-98765432-1', 'DNI98765432', 803, 808, TRUE);
+INSERT INTO WORKER (ID, CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (505, 1005, '654 Calle de la Paz', 'Luis', 'Martínez', '20-76543210-5', 'DNI76543210', 804, 808, TRUE);
+INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (506, 'Siempre Viva 123', 'Homero', 'Simpson', 20324345676, NULL, 800, 808, TRUE);
+INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (507, 'Estadio Libertadores de America', 'Ricardo Enrique', 'Bochini', 20777777776, NULL, 805, 808, TRUE);
+INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (508, 'Esquina Libertad', 'Ciro', 'Martinez', 203152045276, NULL, 807, 1000, FALSE);
+INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (509, 'Av.Colon 10500', 'Mario Alberto', 'Kempes', 20224059876, NULL, 806, 1001, TRUE);
+INSERT INTO WORKER (CONTACT_ID, ADDRESS, NAME, LAST_NAME, CUIL, DOCUMENT, worker_speciality_id, CONSTRUCTION_ID,
+                    AVAILABLE_TO_WORK)
+VALUES (510, 'Miami', 'Leonel Andres', 'Messi', 20334568976, NULL, 804, 1001, FALSE);
+
+INSERT INTO NOTE (ID, DESCRIPTION, USER_ID, CONSTRUCTION_ID)
+VALUES (501, 'Primera visita al sitio completada.', 101, 808);
+INSERT INTO NOTE (ID, DESCRIPTION, USER_ID, CONSTRUCTION_ID)
+VALUES (502, 'Planificación de la obra en curso.', 102, 808);
+INSERT INTO NOTE (ID, DESCRIPTION, USER_ID, CONSTRUCTION_ID)
+VALUES (503, 'Revisión de los planos con el municipio.', 103, 808);
+INSERT INTO NOTE (ID, DESCRIPTION, USER_ID, CONSTRUCTION_ID)
+VALUES (504, 'Pendiente aprobación del seguro.', 104, 808);
+INSERT INTO NOTE (ID, DESCRIPTION, USER_ID, CONSTRUCTION_ID)
+VALUES (505, 'Obra lista para comenzar.', 105, 808);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (506, 'Initial meeting with the client.', 1, 1001);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (507, 'Reviewed site plans and submitted adjustments.', 2, 1001);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (508, 'Site inspection completed. No issues found.', 3, 1002);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (509, 'Budget approved by finance.', 4, 1002);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (510, 'Safety inspection passed.', 5, 1000);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (511, 'Materials delivered to site.', 1, 1000);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (512, 'Started excavation work.', 2, 808);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (513, 'Electrical system design finalized.', 3, 808);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (514, 'Plumbing installation in progress.', 4, 808);
+INSERT INTO NOTE (id, description, user_id, construction_id)
+VALUES (515, 'Roof framework completed.', 5, 808);

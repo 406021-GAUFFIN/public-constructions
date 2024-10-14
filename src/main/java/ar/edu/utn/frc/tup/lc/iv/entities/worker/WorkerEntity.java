@@ -6,7 +6,6 @@ import ar.edu.utn.frc.tup.lc.iv.entities.documentation.WorkerDocumentationEntity
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
@@ -74,13 +73,14 @@ public class WorkerEntity extends BaseEntity {
     /**
      * Type of speciality of the worker.
      */
-    @OneToOne
-    @JoinColumn(name = "SPECIALITY_TYPE", referencedColumnName = "id",  nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "worker_speciality_id")
     private WorkerSpecialityEntity workerSpecialityType;
 
     /**
      * List of documentation associated with the worker.
      */
+
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<WorkerDocumentationEntity> documentationWorker;
 
@@ -95,6 +95,6 @@ public class WorkerEntity extends BaseEntity {
      * Field that indicates if a worker can work on
      * the construction(if worker has unexpired documentation).
      */
-    @Column(name = "AVAIBLE_TO_WORK")
+    @Column(name = "AVAILABLE_TO_WORK")
     private Boolean availableToWork;
 }

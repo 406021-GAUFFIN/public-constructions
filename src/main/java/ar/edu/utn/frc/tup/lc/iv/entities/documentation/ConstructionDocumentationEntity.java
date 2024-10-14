@@ -4,7 +4,6 @@ import ar.edu.utn.frc.tup.lc.iv.entities.BaseEntity;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -44,8 +43,8 @@ public class ConstructionDocumentationEntity extends BaseEntity {
     /**
      * Type of the documentation (e.g., architectural plan, insurance info).
      */
-    @OneToOne
-    @JoinColumn(name = "DOCUMENT_TYPE", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "documentation_type_id")
     private DocumentationTypeEntity documentType;
 
 
