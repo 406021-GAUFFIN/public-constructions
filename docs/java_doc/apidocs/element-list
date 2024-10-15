@@ -6,12 +6,14 @@ ar.edu.utn.frc.tup.lc.iv.controllers
 ar.edu.utn.frc.tup.lc.iv.controllers.api_response
 ar.edu.utn.frc.tup.lc.iv.controllers.construction
 ar.edu.utn.frc.tup.lc.iv.controllers.documentation
+ar.edu.utn.frc.tup.lc.iv.controllers.note
 ar.edu.utn.frc.tup.lc.iv.controllers.worker
 ar.edu.utn.frc.tup.lc.iv.dtos.common
 ar.edu.utn.frc.tup.lc.iv.dtos.construction
 ar.edu.utn.frc.tup.lc.iv.dtos.documentation
 ar.edu.utn.frc.tup.lc.iv.dtos.external.accesses
 ar.edu.utn.frc.tup.lc.iv.dtos.external.contacts
+ar.edu.utn.frc.tup.lc.iv.dtos.note
 ar.edu.utn.frc.tup.lc.iv.dtos.worker
 ar.edu.utn.frc.tup.lc.iv.dtos.worker.documentation
 ar.edu.utn.frc.tup.lc.iv.entities
