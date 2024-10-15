@@ -74,7 +74,7 @@ public class WorkerRequestDto {
     private String document;
 
     /**
-     * ID of the worker's specialty type.
+     * ID of the worker's speciality type.
      */
     @JsonProperty("worker_speciality_type")
     private Long workerSpecialityType;

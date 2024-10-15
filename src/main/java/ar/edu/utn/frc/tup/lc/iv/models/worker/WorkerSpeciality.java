@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
- * This class represents a specialty of a worker.
+ * This class represents a speciality of a worker.
  */
 @Setter
 @Getter

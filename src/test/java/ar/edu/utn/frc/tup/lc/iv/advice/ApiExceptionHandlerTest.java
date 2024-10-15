@@ -15,9 +15,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static com.mysql.cj.util.TimeUtil.DATE_FORMATTER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -225,6 +228,80 @@ public class ApiExceptionHandlerTest {
         assertEquals("Worker creation failed", response.getBody().getMessage());
         assertNotNull(response.getBody().getTimestamp());
     }
+    @Test
+    public void testHandleIllegalArgumentException() {
+        String errorMessage = "Invalid argument";
+        IllegalArgumentException exception = new IllegalArgumentException(errorMessage);
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleIllegalArgumentException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), response.getBody().getError());
+        assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+    @Test
+    public void testHandleWorkerNotAvailableException() {
+        String errorMessage = "Worker is not available";
+        WorkerNotAvailableException exception = new WorkerNotAvailableException(errorMessage);
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleWorkerNotAvailableException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), response.getBody().getError());
+        assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+    @Test
+    public void testHandleDocumentationTypeNotFoundException() {
+        String errorMessage = "Documentation type not found";
+        DocumentationTypeNotFoundException exception = new DocumentationTypeNotFoundException(errorMessage);
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleDocumentationTypeNotFoundExceptionException(exception);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getBody().getError());
+        assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+    @Test
+    public void testHandleNoteNotFoundException() {
+        String errorMessage = "Note not found";
+        NoteNotFoundException exception = new NoteNotFoundException(errorMessage);
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleNoteNotFoundExceptionException(exception);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getBody().getError());
+        assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+    @Test
+    public void testHandleWorkerSpecialityNotFoundException() {
+        String errorMessage = "Worker speciality not found";
+        WorkerSpecialityNotFoundException exception = new WorkerSpecialityNotFoundException(errorMessage);
+
+        ResponseEntity<ErrorApi> response = apiExceptionHandler.handleWorkerSpecialityNotFoundExceptionException(exception);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getBody().getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), response.getBody().getError());
+        assertEquals(errorMessage, response.getBody().getMessage());
+        assertNotNull(response.getBody().getTimestamp());
+    }
+
+
+
+
 
 }
 

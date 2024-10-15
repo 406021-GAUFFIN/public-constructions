@@ -13,15 +13,23 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.List;
 
 
 /**
@@ -165,5 +173,78 @@ public class WorkerController {
         return ResponseEntity.ok(workerService.allowWorkerAccess(workerId, comment));
     }
 
+    /**
+     * Retrieves a list of all ´workers.
+     *
+     * @return A list of all worker response DTOs.
+     */
+    @GetMapping("/get")
+    public ResponseEntity<List<WorkerResponseDto>> getAllWorkers() {
+        return ResponseEntity.ok(workerService.getAllWorkers());
+    }
 
+    /**
+     * Retrieves a pageable list of workers.
+     *
+     * @param page The page number to retrieve.
+     * @param size The number of items per page.
+     * @return A pageable list of worker WorkerResponseDTOs.
+     */
+    @GetMapping("/get/paged")
+    public ResponseEntity<Page<WorkerResponseDto>> getAllWorkersPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(workerService.getAllWorkersPage(pageable), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves a construction by its ID.
+     *
+     * @param id The ID of the construction to retrieve.
+     * @return The response it´s a List DTO of the retrieved construction.
+     */
+    @GetMapping("/get/workers/construction/{id}")
+    public ResponseEntity<List<WorkerResponseDto>> getWorkerConstruction(@PathVariable Long id) {
+        return ResponseEntity.ok((workerService.getAllWorkersOfConstruction(id)));
+    }
+
+    /**
+     * Endpoint to unassign a worker from a construction.
+     *
+     * @param workerId the ID of the worker to unassign.
+     * @return Response entity .
+     */
+    @PutMapping("/{workerId}/unassign")
+    public ResponseEntity<Void> unassignWorkerFromConstruction(@PathVariable Long workerId) {
+        workerService.unassignWorkerFromConstruction(workerId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Endpoint to assign a worker to a construction.
+     *
+     * @param workerId the ID of the worker.
+     * @param constructionId the ID of the construction.
+     * @return Response entity with a success message.
+     */
+    @PutMapping("/{workerId}/assign/{constructionId}")
+    public ResponseEntity<String> assignWorkerToConstruction(@PathVariable Long workerId,
+                                                             @PathVariable Long constructionId) {
+        workerService.assignWorkerToConstruction(workerId, constructionId);
+        return ResponseEntity.ok("Worker assigned to construction successfully");
+    }
+
+    /**
+     * Endpoint to delete a worker from the system.
+     *
+     * @param workerId the ID of the worker to delete.
+     * @return Response entity with a success message.
+     */
+    @DeleteMapping("/{workerId}")
+    public ResponseEntity<String> deleteWorker(@PathVariable Long workerId) {
+        workerService.deleteWorker(workerId);
+        return ResponseEntity.ok("Worker deleted successfully");
+    }
 }

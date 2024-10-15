@@ -5,13 +5,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * DTO for worker specialization type request data.
+ * DTO for worker specialization type response data.
  */
 @Setter
 @Getter
 @NoArgsConstructor
-public class WorkerSpecialityTypeRequestDto {
+public class WorkerSpecialityResponseDto {
 
+    /**
+     * Unique identifier for the entity.
+     */
+    private Long id;
     /**
      * Name of the worker specialization.
      */

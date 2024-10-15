@@ -51,8 +51,8 @@ public class WorkerResponseDto {
     private String document;
 
     /**
-     * Specialty type of the worker.
+     * Speciality type of the worker.
      */
     @JsonProperty("worker_speciality_type")
-    private WorkerSpecialityTypeResponseDto workerSpecialityType;
+    private WorkerSpecialityResponseDto workerSpecialityType;
 }

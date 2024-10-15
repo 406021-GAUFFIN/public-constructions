@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +27,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -142,6 +149,152 @@ class ConstructionServiceImplTest {
 
         assertEquals("Construction with ID " + constructionId + " not found.", exception.getMessage());
     }
+
+    @Test
+    void getAllConstructions_SuccessCase() {
+        // Given
+        ConstructionEntity constructionEntity1 = new ConstructionEntity();
+        constructionEntity1.setId(1L);
+        constructionEntity1.setProjectName("Project 1");
+        constructionEntity1.setPlotId(1L);
+        constructionEntity1.setPlannedStartDate(new Date());
+        constructionEntity1.setPlannedEndDate(new Date());
+
+        ConstructionEntity constructionEntity2 = new ConstructionEntity();
+        constructionEntity2.setId(2L);
+        constructionEntity2.setProjectName("Project 2");
+        constructionEntity2.setPlotId(2L);
+        constructionEntity2.setPlannedStartDate(new Date());
+        constructionEntity2.setPlannedEndDate(new Date());
+
+        List<ConstructionEntity> constructionEntities = Arrays.asList(constructionEntity1, constructionEntity2);
+
+        // Mocking repository response
+        when(constructionRepository.findAll()).thenReturn(constructionEntities);
+
+
+
+
+        // When
+        List<ConstructionResponseDto> actualResponse = constructionService.getAllConstructions();
+
+        // Then
+        assertNotNull(actualResponse);
+        assertEquals(2, actualResponse.size());
+        // Add more assertions to check the contents if necessary
+    }
+
+    @Test
+    void getConstructionById_SuccessCase() {
+        // Given
+        Long constructionId = 1L;
+        ConstructionEntity constructionEntity = new ConstructionEntity();
+        constructionEntity.setId(constructionId);
+        constructionEntity.setProjectName("Project 1");
+        constructionEntity.setPlotId(1L);
+
+        ConstructionResponseDto constructionResponse = new ConstructionResponseDto();
+        constructionResponse.setId(constructionId);
+        constructionResponse.setProjectName("Project 1");
+
+        // Mocking repository and ModelMapper behavior
+        when(constructionRepository.findById(constructionId)).thenReturn(Optional.of(constructionEntity));
+
+
+        // When
+        ConstructionResponseDto actualResponse = constructionService.getConstructionById(constructionId);
+
+        // Then
+        assertNotNull(actualResponse);
+        assertEquals(constructionId, actualResponse.getId());
+        assertEquals("Project 1", actualResponse.getProjectName());
+    }
+
+    /**
+     * Tests the scenario where a construction is not found by the given ID.
+     * It verifies that the correct exception is thrown.
+     */
+    @Test
+    void getConstructionById_ConstructionNotFound() {
+        // Given
+        Long constructionId = 2L;
+
+        // Mocking repository to return empty when the ID does not exist
+        when(constructionRepository.findById(constructionId)).thenReturn(Optional.empty());
+
+        // Then
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            constructionService.getConstructionById(constructionId);
+        });
+
+        assertEquals("Construction not found with ID: " + constructionId, exception.getMessage());
+    }
+
+    @Test
+    void getAllConstructionsPageable_SuccessCase() {
+        // Given
+        Pageable pageable = PageRequest.of(0, 10); // First page, 10 items per page
+        List<ConstructionStatus> statuses = List.of(ConstructionStatus.PLANNED, ConstructionStatus.IN_PROGRESS);
+
+        ConstructionEntity constructionEntity1 = new ConstructionEntity();
+        constructionEntity1.setId(1L);
+        constructionEntity1.setProjectName("Project 1");
+        constructionEntity1.setConstructionStatus(ConstructionStatus.PLANNED);
+
+        ConstructionEntity constructionEntity2 = new ConstructionEntity();
+        constructionEntity2.setId(2L);
+        constructionEntity2.setProjectName("Project 2");
+        constructionEntity2.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
+
+        Page<ConstructionEntity> constructionEntityPage = new PageImpl<>(List.of(constructionEntity1, constructionEntity2), pageable, 2);
+
+        ConstructionResponseDto constructionResponseDto1 = new ConstructionResponseDto();
+        constructionResponseDto1.setId(1L);
+        constructionResponseDto1.setProjectName("Project 1");
+        constructionResponseDto1.setConstructionStatus(ConstructionStatus.PLANNED);
+
+        ConstructionResponseDto constructionResponseDto2 = new ConstructionResponseDto();
+        constructionResponseDto2.setId(2L);
+        constructionResponseDto2.setProjectName("Project 2");
+        constructionResponseDto2.setConstructionStatus(ConstructionStatus.IN_PROGRESS);
+
+        // When
+        when(constructionRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(constructionEntityPage);
+
+        // Then
+        Page<ConstructionResponseDto> actualResponse = constructionService.getAllConstructionsPageable(pageable, statuses);
+
+        assertNotNull(actualResponse);
+        assertEquals(2, actualResponse.getTotalElements()); // Total number of elements
+        assertEquals(2, actualResponse.getContent().size()); // Number of elements on the page
+        assertEquals("Project 1", actualResponse.getContent().get(0).getProjectName());
+        assertEquals("Project 2", actualResponse.getContent().get(1).getProjectName());
+    }
+
+    /**
+     * Tests the pageable retrieval with no matching constructions.
+     * This tests the scenario where the repository returns an empty page.
+     */
+    @Test
+    void getAllConstructionsPageable_EmptyResult() {
+        // Given
+        Pageable pageable = PageRequest.of(0, 10); // First page, 10 items per page
+        List<ConstructionStatus> statuses = List.of(ConstructionStatus.COMPLETED);
+
+        // Empty result page
+        Page<ConstructionEntity> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        // When
+        when(constructionRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(emptyPage);
+
+        // Then
+        Page<ConstructionResponseDto> actualResponse = constructionService.getAllConstructionsPageable(pageable, statuses);
+
+        assertNotNull(actualResponse);
+        assertEquals(0, actualResponse.getTotalElements());
+        assertEquals(0, actualResponse.getContent().size()); // No elements on the page
+    }
+
 
 
 }
