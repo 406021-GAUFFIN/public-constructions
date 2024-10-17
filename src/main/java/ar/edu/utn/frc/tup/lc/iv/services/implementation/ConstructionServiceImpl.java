@@ -3,6 +3,7 @@ package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionAlreadyExistsException;
@@ -168,5 +169,43 @@ public class ConstructionServiceImpl implements ConstructionService {
         Page<ConstructionEntity> constructionEntityPage = constructionRepository.findAll(spec, pageable);
 
         return constructionEntityPage.map(constructionEntity -> modelMapper.map(constructionEntity, ConstructionResponseDto.class));
+    }
+
+    /**
+     * Updates the details of an existing construction.
+     *
+     * @param id
+     * @param constructionUpdateDto
+     * DTO with construction ID and new status.
+     * @return Response DTO indicating the status update result.
+     */
+    @Override
+    public ConstructionResponseDto updateConstructionDetails(Long id, ConstructionUpdateDto constructionUpdateDto) {
+        ConstructionEntity constructionEntity = constructionRepository.findById(id)
+                .orElseThrow(() -> new ConstructionNotFoundException(
+                        "Construction with ID " + id + " not found.")
+                );
+
+        // validacion de que los campos no esten vacios
+        if (constructionUpdateDto.getPlannedStartDate() != null) {
+            constructionEntity.setPlannedStartDate(constructionUpdateDto.getPlannedStartDate());
+        }
+        if (constructionUpdateDto.getPlannedEndDate() != null) {
+            constructionEntity.setPlannedEndDate(constructionUpdateDto.getPlannedEndDate());
+        }
+        if (constructionUpdateDto.getDescription() != null) {
+            constructionEntity.setDescription(constructionUpdateDto.getDescription());
+        }
+        if (constructionUpdateDto.getProjectName() != null) {
+            constructionEntity.setProjectName(constructionUpdateDto.getProjectName());
+        }
+        if (constructionUpdateDto.getProjectAddress() != null) {
+            constructionEntity.setProjectAddress(constructionUpdateDto.getProjectAddress());
+        }
+
+        ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
+
+        return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
+
     }
 }
