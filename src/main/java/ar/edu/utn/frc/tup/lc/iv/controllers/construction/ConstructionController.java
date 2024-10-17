@@ -3,6 +3,7 @@ package ar.edu.utn.frc.tup.lc.iv.controllers.construction;
 import ar.edu.utn.frc.tup.lc.iv.dtos.common.ErrorApi;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
@@ -168,5 +169,55 @@ public class ConstructionController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(constructionService.getAllConstructionsPageable(pageable, constructionStatuses), HttpStatus.OK);
+    }
+
+    /**
+     * Updates the details of an existing construction.
+     *
+     * @param id
+     * @param constructionUpdateDto
+     * DTO with construction ID and new status.
+     * @return Response DTO indicating the status update result.
+     */
+    @Operation(
+            summary = "Update construction details",
+            description = "Update the details of an existing construction by providing a valid ConstructionUpdateDto"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Construction details updated successfully",
+                    content = @Content(
+                            schema = @Schema(implementation = ConstructionResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Construction not found",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorApi.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid input data or validation failure",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorApi.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorApi.class)
+                    )
+            )
+    })
+    @PutMapping("updateWorkDetails/{id}")
+    public  ResponseEntity<ConstructionResponseDto> updateWorkDetails(@PathVariable Long id,
+                                                                      @RequestBody ConstructionUpdateDto constructionUpdateDto) {
+        ConstructionResponseDto updatedConstruction = constructionService.updateConstructionDetails(id, constructionUpdateDto);
+
+        return ResponseEntity.ok(updatedConstruction);
     }
 }
