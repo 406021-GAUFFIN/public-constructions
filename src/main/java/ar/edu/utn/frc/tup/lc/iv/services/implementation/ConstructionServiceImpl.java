@@ -193,13 +193,13 @@ public class ConstructionServiceImpl implements ConstructionService {
         if (constructionUpdateDto.getPlannedEndDate() != null) {
             constructionEntity.setPlannedEndDate(constructionUpdateDto.getPlannedEndDate());
         }
-        if (constructionUpdateDto.getDescription() != null) {
+        if (constructionUpdateDto.getDescription() != null && !constructionUpdateDto.getDescription().trim().isEmpty()) {
             constructionEntity.setDescription(constructionUpdateDto.getDescription());
         }
-        if (constructionUpdateDto.getProjectName() != null) {
+        if (constructionUpdateDto.getProjectName() != null && !constructionUpdateDto.getProjectName().trim().isEmpty()) {
             constructionEntity.setProjectName(constructionUpdateDto.getProjectName());
         }
-        if (constructionUpdateDto.getProjectAddress() != null) {
+        if (constructionUpdateDto.getProjectAddress() != null && !constructionUpdateDto.getProjectAddress().trim().isEmpty()) {
             constructionEntity.setProjectAddress(constructionUpdateDto.getProjectAddress());
         }
 
