@@ -213,7 +213,7 @@ public class ConstructionController {
                     )
             )
     })
-    @PutMapping("updateWorkDetails/{id}")
+    @PutMapping("update-work-details/{id}")
     public  ResponseEntity<ConstructionResponseDto> updateWorkDetails(@PathVariable Long id,
                                                                       @Valid @RequestBody ConstructionUpdateDto constructionUpdateDto) {
         ConstructionResponseDto updatedConstruction = constructionService.updateConstructionDetails(id, constructionUpdateDto);
