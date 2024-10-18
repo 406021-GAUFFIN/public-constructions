@@ -199,9 +199,6 @@ public class ConstructionServiceImpl implements ConstructionService {
         if (constructionUpdateDto.getProjectName() != null && !constructionUpdateDto.getProjectName().trim().isEmpty()) {
             constructionEntity.setProjectName(constructionUpdateDto.getProjectName());
         }
-        if (constructionUpdateDto.getProjectAddress() != null && !constructionUpdateDto.getProjectAddress().trim().isEmpty()) {
-            constructionEntity.setProjectAddress(constructionUpdateDto.getProjectAddress());
-        }
 
         ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
 
