@@ -14,7 +14,6 @@ import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionSpecification;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -200,7 +199,7 @@ public class ConstructionServiceImpl implements ConstructionService {
             return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
         } catch (Exception ex) {
             //lanza excepcion en caso de error al guardar los datos en la base
-            throw new DataAccessException("Error occurred while saving construction details.", ex) {};
+            throw new DataAccessException("Error occurred while saving construction details.", ex) { };
         }
 
     }
