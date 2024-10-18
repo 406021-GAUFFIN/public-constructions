@@ -14,10 +14,12 @@ import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionSpecification;
 import ar.edu.utn.frc.tup.lc.iv.services.interfaces.ConstructionService;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -186,23 +188,20 @@ public class ConstructionServiceImpl implements ConstructionService {
                         "Construction with ID " + id + " not found.")
                 );
 
-        // validacion de que los campos no esten vacios
-        if (constructionUpdateDto.getPlannedStartDate() != null) {
-            constructionEntity.setPlannedStartDate(constructionUpdateDto.getPlannedStartDate());
-        }
-        if (constructionUpdateDto.getPlannedEndDate() != null) {
-            constructionEntity.setPlannedEndDate(constructionUpdateDto.getPlannedEndDate());
-        }
-        if (constructionUpdateDto.getDescription() != null) {
-            constructionEntity.setDescription(constructionUpdateDto.getDescription());
-        }
-        if (constructionUpdateDto.getProjectName() != null) {
-            constructionEntity.setProjectName(constructionUpdateDto.getProjectName());
-        }
+        constructionEntity.setPlannedStartDate(constructionUpdateDto.getPlannedStartDate());
+        constructionEntity.setPlannedEndDate(constructionUpdateDto.getPlannedEndDate());
+        constructionEntity.setDescription(constructionUpdateDto.getDescription());
+        constructionEntity.setProjectName(constructionUpdateDto.getProjectName());
 
-        ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
 
-        return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
+        try {
+            ConstructionEntity constructionSaved = constructionRepository.save(constructionEntity);
+
+            return modelMapper.map(constructionSaved, ConstructionResponseDto.class);
+        } catch (Exception ex) {
+            //lanza excepcion en caso de error al guardar los datos en la base
+            throw new DataAccessException("Error occurred while saving construction details.", ex) {};
+        }
 
     }
 }
