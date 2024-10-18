@@ -3,12 +3,14 @@ package ar.edu.utn.frc.tup.lc.iv.services.implementation;
 import ar.edu.utn.frc.tup.lc.iv.clients.CadastreClient;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.entities.construction.ConstructionEntity;
 import ar.edu.utn.frc.tup.lc.iv.error.ConstructionNotFoundException;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import ar.edu.utn.frc.tup.lc.iv.repositories.ConstructionRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -296,6 +298,60 @@ class ConstructionServiceImplTest {
     }
 
 
+
+    @Test
+    void updateConstructionsDetails_success() {
+        // given
+        Long constructionId = 1L;
+        ConstructionEntity existingConstruction = new ConstructionEntity();
+        existingConstruction.setId(constructionId);
+        existingConstruction.setPlannedStartDate(new Date());
+        existingConstruction.setPlannedEndDate(new Date());
+        existingConstruction.setDescription("old description");
+        existingConstruction.setProjectName("old project name");
+
+        ConstructionUpdateDto updateDto = new ConstructionUpdateDto();
+        updateDto.setPlannedStartDate(new Date());
+        updateDto.setPlannedEndDate(new Date());
+        updateDto.setDescription("new description");
+        updateDto.setProjectName("new project name");
+
+        when(constructionRepository.findById(constructionId)).thenReturn(Optional.of(existingConstruction));
+        when(constructionRepository.save(any(ConstructionEntity.class))).thenReturn(existingConstruction);
+
+        // when
+        ConstructionResponseDto responseDto = constructionService.updateConstructionDetails(constructionId, updateDto);
+
+        // then
+        assertNotNull(responseDto);
+        assertEquals("new description", existingConstruction.getDescription());
+        assertEquals("new project name", existingConstruction.getProjectName());
+
+        verify(constructionRepository).findById(constructionId);
+        verify(constructionRepository).save(existingConstruction);
+
+    }
+
+    @Test
+    void updateConstructionsDetails_notFound() {
+        // given
+        Long constructionId = 1L;
+        ConstructionUpdateDto updateDto = new ConstructionUpdateDto();
+        updateDto.setPlannedStartDate(new Date());
+        updateDto.setPlannedEndDate(new Date());
+        updateDto.setDescription("some description");
+        updateDto.setProjectName("some project name");
+
+        when(constructionRepository.findById(constructionId)).thenReturn(Optional.empty());
+
+        // when y then
+        assertThrows(ConstructionNotFoundException.class, () -> {
+           constructionService.updateConstructionDetails(constructionId, updateDto);
+        });
+
+        verify(constructionRepository).findById(constructionId);
+
+    }
 
 }
 
