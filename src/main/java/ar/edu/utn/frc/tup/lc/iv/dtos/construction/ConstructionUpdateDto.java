@@ -43,11 +43,4 @@ public class ConstructionUpdateDto {
     @NotBlank(message = "Project name cannot be null or empty")
     @JsonProperty("project_name")
     private String projectName;
-
-    /**
-     * Address of the construction project.
-     */
-    @NotBlank(message = "Address cannot be null or empty")
-    @JsonProperty("project_address")
-    private String projectAddress;
 }
