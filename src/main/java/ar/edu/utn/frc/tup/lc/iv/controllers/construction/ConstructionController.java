@@ -215,7 +215,7 @@ public class ConstructionController {
     })
     @PutMapping("updateWorkDetails/{id}")
     public  ResponseEntity<ConstructionResponseDto> updateWorkDetails(@PathVariable Long id,
-                                                                      @RequestBody ConstructionUpdateDto constructionUpdateDto) {
+                                                                      @Valid @RequestBody ConstructionUpdateDto constructionUpdateDto) {
         ConstructionResponseDto updatedConstruction = constructionService.updateConstructionDetails(id, constructionUpdateDto);
 
         return ResponseEntity.ok(updatedConstruction);
