@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lc.iv.services.interfaces;
 
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionResponseDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.construction.ConstructionUpdateStatusRequestDto;
 import ar.edu.utn.frc.tup.lc.iv.models.construction.ConstructionStatus;
 import org.springframework.stereotype.Service;
@@ -56,4 +57,15 @@ public interface ConstructionService {
      * @return A pageable list of construction request DTOs.
      */
     Page<ConstructionResponseDto> getAllConstructionsPageable(Pageable pageable, List<ConstructionStatus> constructionStatus);
+
+    /**
+     * Updates the details of an existing construction.
+     *
+     * @param id
+     * @param constructionUpdateDto
+     * DTO containing the construction ID and new details for the update.
+     * @return Response DTO indicating the updated construction details.
+     */
+    ConstructionResponseDto updateConstructionDetails(Long id, ConstructionUpdateDto constructionUpdateDto);
+
 }
